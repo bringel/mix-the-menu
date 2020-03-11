@@ -1,8 +1,8 @@
-import React from 'react';
-
 import facebook from '../images/facebook_white.svg';
 import google from '../images/google_white.svg';
 import microsoft from '../images/microsoft_white.svg';
+import React from 'react';
+
 
 type Props = {};
 

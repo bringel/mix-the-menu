@@ -1,8 +1,9 @@
+import * as serviceWorker from './serviceWorker';
+import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 import './tailwind.css';
+import './firebase';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
