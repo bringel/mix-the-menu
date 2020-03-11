@@ -2,7 +2,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState
   } from 'react';
 import firebase from '../firebase';
@@ -28,17 +27,20 @@ type Props = {
 };
 
 export const AuthContextProvider = (props: Props) => {
-  const authRef = useRef(firebase.auth());
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState<firebase.User | null>(null);
 
   useEffect(() => {
-    const unsubscribe = authRef.current.onIdTokenChanged(user => {
+    const unsubscribe = firebase.auth().onIdTokenChanged(user => {
       setUser(user);
       setIsSignedIn(user !== null);
     });
 
     return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
   }, []);
 
   const value = useMemo(() => {
