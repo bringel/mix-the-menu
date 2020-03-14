@@ -7,6 +7,7 @@ import React, {
 import firebase from '../firebase';
 
 type AuthContextValue = {
+  initialized: boolean;
   isSignedIn: boolean;
   user: null | firebase.User;
 };
@@ -29,9 +30,11 @@ type Props = {
 export const AuthContextProvider = (props: Props) => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState<firebase.User | null>(null);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onIdTokenChanged(user => {
+      setInitialized(true);
       setUser(user);
       setIsSignedIn(user !== null);
     });
@@ -45,10 +48,11 @@ export const AuthContextProvider = (props: Props) => {
 
   const value = useMemo(() => {
     return {
+      initialized: initialized,
       isSignedIn: isSignedIn,
       user: user
     };
-  }, [isSignedIn, user]);
+  }, [initialized, isSignedIn, user]);
 
   return <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>;
 };
