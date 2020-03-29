@@ -23,7 +23,8 @@ const Layout = (props: Props) => {
           </ul>
         )}
       </nav>
-      {props.children}
+
+      <div className="py-2">{props.children}</div>
     </div>
   );
 };

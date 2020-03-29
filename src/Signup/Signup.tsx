@@ -46,7 +46,7 @@ const Signup = (props: Props) => {
 
   return (
     <Layout>
-      <div className="flex justify-center p-2">
+      <div className="flex justify-center">
         <div className="bg-white rounded-sm m-3 px-4 py-6 border shadow-md flex-none w-full md:w-1/2 lg:w-1/4">
           <form onSubmit={e => e.preventDefault()}>
             <label htmlFor="displayName">Name</label>
