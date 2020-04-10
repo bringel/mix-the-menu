@@ -14,7 +14,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/user/settings" element={<Settings />} />
+          <Route path="/user/settings/*" element={<Settings />} />
         </Routes>
       </AuthContextProvider>
     </BrowserRouter>
