@@ -24,3 +24,4 @@ yarn-error.log*
 
 
 src/tailwind.css
+.firebase/
