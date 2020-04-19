@@ -10,29 +10,31 @@ export function useFirestoreDocument<TDoc>(
   const [docRef, setDocRef] = useState<firebase.firestore.DocumentReference | null | undefined>(null);
 
   useEffect(() => {
-    const firestore = firebase.firestore();
+    if (!!collectionName && !!documentID) {
+      const firestore = firebase.firestore();
 
-    const documentRef = firestore.collection(collectionName).doc(documentID);
-    setDocRef(prev => {
-      if (!prev?.isEqual(documentRef)) {
-        return documentRef;
+      const documentRef = firestore.collection(collectionName).doc(documentID);
+      setDocRef(prev => {
+        if (!prev?.isEqual(documentRef)) {
+          return documentRef;
+        } else {
+          return prev;
+        }
+      });
+
+      if (oneTimeSnapshot) {
+        documentRef.get().then(snapshot => {
+          const data = snapshot.data() as TDoc; //have to trust that we passed the right type for this collection
+          setDoc(data);
+        });
       } else {
-        return prev;
+        const unsubscribe = documentRef.onSnapshot(snapshot => {
+          const data = snapshot.data() as TDoc; //have to trust that we passed the right type for this collection
+          setDoc(data);
+        });
+
+        return () => unsubscribe();
       }
-    });
-
-    if (oneTimeSnapshot) {
-      documentRef.get().then(snapshot => {
-        const data = snapshot.data() as TDoc; //have to trust that we passed the right type for this collection
-        setDoc(data);
-      });
-    } else {
-      const unsubscribe = documentRef.onSnapshot(snapshot => {
-        const data = snapshot.data() as TDoc; //have to trust that we passed the right type for this collection
-        setDoc(data);
-      });
-
-      return () => unsubscribe();
     }
   }, [collectionName, documentID, oneTimeSnapshot]);
   return [doc, docRef];

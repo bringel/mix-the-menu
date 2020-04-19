@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { UserSettingsContextProvider } from './contexts/UserSettingsContext';
 import Dashboard from './Dashboard/Dashboard';
 import { AuthContextProvider } from './firebase/FirebaseAuthContext';
 import Login from './Login/Login';
@@ -10,12 +11,14 @@ function App() {
   return (
     <BrowserRouter>
       <AuthContextProvider>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/user/settings/*" element={<Settings />} />
-        </Routes>
+        <UserSettingsContextProvider>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/user/settings/*" element={<Settings />} />
+          </Routes>
+        </UserSettingsContextProvider>
       </AuthContextProvider>
     </BrowserRouter>
   );
