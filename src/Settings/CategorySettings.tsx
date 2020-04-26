@@ -1,5 +1,6 @@
+import classnames from 'classnames';
 import { nanoid } from 'nanoid';
-import React, { useCallback, useState } from 'react';
+import React, { KeyboardEvent, useCallback, useState } from 'react';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import { useFirestoreDocument } from '../firebase/useFirestoreDocument';
 import { collections } from '../firebaseCollections';
@@ -11,13 +12,22 @@ const CategorySettings = (props: Props) => {
   const [categoryToAdd, setCategoryToAdd] = useState('');
   const authContext = useAuthContext();
 
-  const [userSettings, userSettingsDocRef] = useFirestoreDocument<UserSettings>(
+  const [userSettings, userSettingsDocRef, loaded] = useFirestoreDocument<UserSettings>(
     collections.userSettings,
     authContext?.user?.uid ?? ''
   );
 
+  let enteringDuplicate = false;
+  if (userSettings && userSettings.categories) {
+    const existingIndex = userSettings.categories.findIndex(c => {
+      return c.displayName.toLowerCase() === categoryToAdd.toLowerCase();
+    });
+
+    enteringDuplicate = existingIndex !== -1;
+  }
+
   const addCategory = useCallback(() => {
-    if (categoryToAdd !== '') {
+    if (categoryToAdd !== '' && !enteringDuplicate) {
       const id = nanoid();
 
       const newCategory: MealCategory = {
@@ -48,36 +58,54 @@ const CategorySettings = (props: Props) => {
         setCategoryToAdd('');
       });
     }
-  }, [categoryToAdd, userSettings, userSettingsDocRef]);
+  }, [categoryToAdd, enteringDuplicate, userSettings, userSettingsDocRef]);
+
+  const handleEnter = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        addCategory();
+      }
+    },
+    [addCategory]
+  );
 
   return (
     <>
       <h3 className="text-lg">Meal Categories</h3>
-      <div className="border border-gray-600 rounded-sm">
-        <div className="flex flex-row">
-          <input
-            name="addCategory"
-            placeholder="Add a category"
-            value={categoryToAdd}
-            onChange={e => setCategoryToAdd(e.target.value)}
-            className="px-2 flex-grow"
-          />
-          <button onClick={addCategory} className="btn bg-green-600 rounded-none text-white">
-            Add
-          </button>
-        </div>
-        {userSettings?.categories?.length ? (
-          userSettings.categories.map(c => (
-            <div key={c.id} className="p-2 border-t border-gray-600">
-              {c.displayName}
-            </div>
-          ))
-        ) : (
-          <div className="p-8 flex justify-center italic text-gray-600">
-            You have no saved meal categories. Add some categories so you can create your first randomized meal plan{' '}
+      {loaded && (
+        <div className="border border-gray-600 rounded-sm">
+          <div className="flex flex-row">
+            <input
+              name="addCategory"
+              placeholder="Add a category"
+              value={categoryToAdd}
+              onChange={e => setCategoryToAdd(e.target.value)}
+              className="px-2 flex-grow"
+              onKeyDown={handleEnter}
+            />
+            <button
+              onClick={addCategory}
+              className={classnames('btn rounded-none text-white', {
+                'bg-green-600': !enteringDuplicate,
+                'bg-gray-500': enteringDuplicate
+              })}
+              disabled={enteringDuplicate}>
+              Add
+            </button>
           </div>
-        )}
-      </div>
+          {userSettings?.categories?.length ? (
+            userSettings.categories.map(c => (
+              <div key={c.id} className="p-2 border-t border-gray-600">
+                {c.displayName}
+              </div>
+            ))
+          ) : (
+            <div className="p-8 flex justify-center italic text-gray-600">
+              You have no saved meal categories. Add some categories so you can create your first randomized meal plan{' '}
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };
