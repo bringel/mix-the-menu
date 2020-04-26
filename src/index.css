@@ -6,6 +6,10 @@
   @apply py-2 px-4 rounded-md  text-lg;
 }
 
+.btn:disabled {
+  @apply bg-gray-500 cursor-not-allowed;
+}
+
 .input {
   @apply border rounded-sm  text-lg p-1;
 }

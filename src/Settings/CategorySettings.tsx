@@ -1,4 +1,3 @@
-import classnames from 'classnames';
 import { nanoid } from 'nanoid';
 import React, { KeyboardEvent, useCallback, useState } from 'react';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
@@ -85,10 +84,7 @@ const CategorySettings = (props: Props) => {
             />
             <button
               onClick={addCategory}
-              className={classnames('btn rounded-none text-white', {
-                'bg-green-600': !enteringDuplicate,
-                'bg-gray-500': enteringDuplicate
-              })}
+              className="btn bg-green-600 rounded-none text-white"
               disabled={enteringDuplicate}>
               Add
             </button>
