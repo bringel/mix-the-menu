@@ -3,7 +3,7 @@ name: Develop CI/CD
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   build:
@@ -45,6 +45,6 @@ jobs:
       - name: Deploy
         uses: w9jds/firebase-action@v1.3.0
         with:
-          args: deploy --only hosting:mix-the-menu-dev
+          args: deploy --only hosting:mix-the-menu-prod
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
