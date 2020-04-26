@@ -1,6 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import { useFirestoreDocument } from '../firebase/useFirestoreDocument';
+import { collections } from '../firebaseCollections';
 import { UserSettings } from '../types/UserSettings';
 
 type UserSettingsContextValue = {
@@ -26,7 +27,7 @@ type Props = {
 export const UserSettingsContextProvider = (props: Props) => {
   const authContext = useAuthContext();
 
-  const [settings] = useFirestoreDocument<UserSettings>('userSettings', authContext.user?.uid ?? '');
+  const [settings] = useFirestoreDocument<UserSettings>(collections.userSettings, authContext.user?.uid ?? '');
 
   const value = useMemo(() => {
     return {
