@@ -1,77 +1,42 @@
-import { nanoid } from 'nanoid';
 import React, { KeyboardEvent, useCallback, useState } from 'react';
-import { useAuthContext } from '../firebase/FirebaseAuthContext';
-import { useFirestoreDocument } from '../firebase/useFirestoreDocument';
-import { collections } from '../firebaseCollections';
-import { MealCategory, UserSettings } from '../types/UserSettings';
+import { useUserSettingsContext } from '../contexts/UserSettingsContext';
 
 type Props = {};
 
 const CategorySettings = (props: Props) => {
   const [categoryToAdd, setCategoryToAdd] = useState('');
-  const authContext = useAuthContext();
-
-  const [userSettings, userSettingsDocRef, loaded] = useFirestoreDocument<UserSettings>(
-    collections.userSettings,
-    authContext?.user?.uid ?? ''
-  );
+  const { settings, addCategory } = useUserSettingsContext();
 
   let enteringDuplicate = false;
-  if (userSettings && userSettings.categories) {
-    const existingIndex = userSettings.categories.findIndex(c => {
+  if (settings) {
+    const existingIndex = settings.categories.findIndex(c => {
       return c.displayName.toLowerCase() === categoryToAdd.toLowerCase();
     });
 
     enteringDuplicate = existingIndex !== -1;
   }
 
-  const addCategory = useCallback(() => {
+  const addMealCategory = useCallback(() => {
     if (categoryToAdd !== '' && !enteringDuplicate) {
-      const id = nanoid();
-
-      const newCategory: MealCategory = {
-        id: id,
-        displayName: categoryToAdd
-      };
-
-      let settings = userSettings;
-      if (settings) {
-        if (settings.categories) {
-          settings = {
-            ...userSettings,
-            categories: [...settings.categories, newCategory]
-          };
-        } else {
-          settings = {
-            ...userSettings,
-            categories: [newCategory]
-          };
-        }
-      } else {
-        settings = {
-          categories: [newCategory]
-        };
-      }
-
-      userSettingsDocRef?.set(settings).then(() => {
+      addCategory(categoryToAdd).then(() => {
         setCategoryToAdd('');
       });
     }
-  }, [categoryToAdd, enteringDuplicate, userSettings, userSettingsDocRef]);
+  }, [addCategory, categoryToAdd, enteringDuplicate]);
 
   const handleEnter = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
-        addCategory();
+        addMealCategory();
       }
     },
-    [addCategory]
+    [addMealCategory]
   );
 
   return (
     <>
       <h3 className="text-lg">Meal Categories</h3>
-      {loaded && (
+      {settings && (
         <div className="border border-gray-600 rounded-sm">
           <div className="flex flex-row">
             <input
@@ -83,14 +48,14 @@ const CategorySettings = (props: Props) => {
               onKeyDown={handleEnter}
             />
             <button
-              onClick={addCategory}
+              onClick={addMealCategory}
               className="btn bg-green-600 rounded-none text-white"
               disabled={enteringDuplicate}>
               Add
             </button>
           </div>
-          {userSettings?.categories?.length ? (
-            userSettings.categories.map(c => (
+          {settings?.categories.length ? (
+            settings.categories.map(c => (
               <div key={c.id} className="p-2 border-t border-gray-600">
                 {c.displayName}
               </div>

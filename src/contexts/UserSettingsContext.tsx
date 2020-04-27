@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import React, { useContext, useMemo } from 'react';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import { useFirestoreDocument } from '../firebase/useFirestoreDocument';
@@ -6,6 +7,8 @@ import { UserSettings } from '../types/UserSettings';
 
 type UserSettingsContextValue = {
   settings: UserSettings | null | undefined;
+  addCategory: (categoryName: string) => Promise<void>;
+  removeCategory: (id: string) => Promise<void>;
 };
 
 export const UserSettingsContext = React.createContext<UserSettingsContextValue | null>(null);
@@ -27,12 +30,53 @@ type Props = {
 export const UserSettingsContextProvider = (props: Props) => {
   const authContext = useAuthContext();
 
-  const [settings] = useFirestoreDocument<UserSettings>(collections.userSettings, authContext.user?.uid ?? '');
+  const [settings, settingsDocRef] = useFirestoreDocument<UserSettings>(
+    collections.userSettings,
+    authContext.user?.uid ?? ''
+  );
 
   const value = useMemo(() => {
-    return {
-      settings: settings
+    const addCategory = (categoryName: string) => {
+      if (settingsDocRef) {
+        let updatedSettings = settings;
+        const id = nanoid();
+        const newCategory = {
+          id: id,
+          displayName: categoryName
+        };
+        if (updatedSettings) {
+          updatedSettings = {
+            ...updatedSettings,
+            categories: [...updatedSettings.categories, newCategory]
+          };
+        } else {
+          updatedSettings = {
+            categories: [newCategory]
+          };
+        }
+        return settingsDocRef.set(updatedSettings);
+      } else {
+        return Promise.reject(new Error('Could not get document ref to user settings'));
+      }
     };
-  }, [settings]);
+
+    const removeCategory = (id: string) => {
+      if (settingsDocRef && settings) {
+        const updatedSettings: UserSettings = {
+          ...settings,
+          categories: settings.categories.filter(c => c.id !== id)
+        };
+        return settingsDocRef.set(updatedSettings);
+      } else {
+        return Promise.reject(new Error('Could not get document ref to user settings'));
+      }
+    };
+
+    return {
+      settings: settings,
+      addCategory: addCategory,
+      removeCategory: removeCategory
+    };
+  }, [settings, settingsDocRef]);
   return <UserSettingsContext.Provider value={value}>{props.children}</UserSettingsContext.Provider>;
 };
