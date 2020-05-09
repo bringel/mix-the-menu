@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState
-  } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
 
 const useForm = (initialValues: { [name: string]: string }, validationSchema: ObjectSchema) => {
@@ -24,6 +18,8 @@ const useForm = (initialValues: { [name: string]: string }, validationSchema: Ob
     [setFormValues]
   );
 
+  //TODO: debounce the validation, or run it on blur?
+  // come up with some way to handle multiple validation requests going out (in the case of async validations)
   useEffect(() => {
     validationSchema.isValid(formValues).then(valid => {
       setValid(valid);

@@ -10,6 +10,10 @@
   @apply bg-gray-500 cursor-not-allowed;
 }
 
+.btn:disabled:hover {
+  @apply bg-gray-500;
+}
+
 .input {
   @apply border rounded-sm  text-lg p-1;
 }

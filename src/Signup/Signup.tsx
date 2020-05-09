@@ -1,29 +1,40 @@
 import classnames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
 import Layout from '../components/Layout/Layout';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import useFirebaseAuth from '../firebase/useFirebaseAuth';
+import useForm from '../hooks/useForm';
 
 type Props = {};
 
-const checkValid = (email: string, password: string, passwordVerify: string) => {
-  const emailRegex = /\S*@\S*\.\S*/;
-
-  const emailValid = emailRegex.test(email);
-  const passwordsMatch = password === passwordVerify;
-
-  return emailValid && passwordsMatch && email !== '' && password !== '' && passwordVerify !== '';
-};
+const schema = yup.object().shape({
+  displayName: yup.string().required(),
+  email: yup
+    .string()
+    .email()
+    .required(),
+  password: yup.string().required(),
+  passwordVerify: yup
+    .string()
+    .required()
+    .oneOf([yup.ref('password')])
+});
 
 const Signup = (props: Props) => {
   const navigate = useNavigate();
   const authContext = useAuthContext();
   const { createUserWithEmail } = useFirebaseAuth();
-  const [displayName, setDisplayName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordVerify, setPasswordVerify] = useState('');
+  const { values, handleChange, isValid } = useForm(
+    {
+      displayName: '',
+      email: '',
+      password: '',
+      passwordVerify: ''
+    },
+    schema
+  );
 
   useEffect(() => {
     if (authContext.isSignedIn) {
@@ -31,13 +42,11 @@ const Signup = (props: Props) => {
     }
   }, [authContext.isSignedIn, navigate]);
 
-  const valid = checkValid(email, password, passwordVerify);
-
   const handleSignUp = () => {
-    createUserWithEmail(email, password).then(userCred => {
+    createUserWithEmail(values.email, values.password).then(userCred => {
       if (userCred) {
         userCred.user?.updateProfile({
-          displayName: displayName
+          displayName: values.displayName
         });
       }
       navigate('/');
@@ -50,51 +59,22 @@ const Signup = (props: Props) => {
         <div className="bg-white rounded-sm m-3 px-4 py-6 border shadow-md flex-none w-full md:w-1/2 lg:w-1/4">
           <form onSubmit={e => e.preventDefault()}>
             <label htmlFor="displayName">Name</label>
-            <input
-              name="displayName"
-              type="text"
-              onChange={e => {
-                setDisplayName(e.target.value);
-              }}
-              className="input w-full mb-1"
-            />
+            <input name="displayName" type="text" onChange={handleChange} className="input w-full mb-1" />
             <label htmlFor="email">Email</label>
-            <input
-              name="email"
-              type="email"
-              onChange={e => {
-                setEmail(e.target.value);
-              }}
-              className="input w-full mb-1"
-            />
+            <input name="email" type="email" onChange={handleChange} className="input w-full mb-1" />
             <label htmlFor="password">Password</label>
-            <input
-              name="password"
-              type="password"
-              onChange={e => {
-                setPassword(e.target.value);
-              }}
-              className="input w-full mb-1"
-            />
+            <input name="password" type="password" onChange={handleChange} className="input w-full mb-1" />
             <label htmlFor="password">Verify Password</label>
-            <input
-              name="verifyPassword"
-              type="password"
-              onChange={e => {
-                setPasswordVerify(e.target.value);
-              }}
-              className="input w-full mb-1"
-            />
+            <input name="passwordVerify" type="password" onChange={handleChange} className="input w-full mb-1" />
 
             <button
               type="submit"
-              // className="btn bg-green-600 text-white w-full hover:bg-green-700 my-2"
               className={classnames('btn text-white w-full my-2', {
-                'bg-green-600': valid,
-                'hover:bg-green-700': valid,
-                'bg-gray-500': !valid
+                'bg-green-600': isValid,
+                'hover:bg-green-700': isValid,
+                'bg-gray-500': !isValid
               })}
-              disabled={!valid}
+              disabled={!isValid}
               onClick={handleSignUp}>
               Sign Up
             </button>

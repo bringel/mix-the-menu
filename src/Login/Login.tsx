@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
 import Layout from '../components/Layout/Layout';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import useFirebaseAuth from '../firebase/useFirebaseAuth';
+import useForm from '../hooks/useForm';
 import facebook from '../images/facebook_white.svg';
 import google from '../images/google_white.svg';
 import microsoft from '../images/microsoft_white.svg';
@@ -14,8 +16,20 @@ const Login = (props: Props) => {
   const { signInWithGoogle, signInWithFacebook, signInWithMicrosoft, signInWithEmail } = useFirebaseAuth();
   const authContext = useAuthContext();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .email()
+      .required(),
+    password: yup.string().required()
+  });
+  const { values, handleChange, isValid } = useForm(
+    {
+      email: '',
+      password: ''
+    },
+    schema
+  );
 
   useEffect(() => {
     if (authContext.isSignedIn) {
@@ -29,25 +43,19 @@ const Login = (props: Props) => {
         <div className="bg-white rounded-sm m-3 px-4 py-6 border shadow-md flex-none w-full md:w-1/2 lg:w-1/4 ">
           <form onSubmit={e => e.preventDefault()}>
             <label htmlFor="email">Email</label>
-            <input
-              name="email"
-              className="input w-full mb-1"
-              onChange={e => {
-                setEmail(e.target.value);
-              }}
-            />
+            <input name="email" className="input w-full mb-1" value={values.email} onChange={handleChange} />
             <label htmlFor="password">Password</label>
             <input
               name="password"
               type="password"
               className="input w-full mb-1"
-              onChange={e => {
-                setPassword(e.target.value);
-              }}
+              value={values.password}
+              onChange={handleChange}
             />
             <button
-              onClick={() => signInWithEmail(email, password)}
-              className="btn bg-green-600 text-white w-full hover:bg-green-700 my-2">
+              onClick={() => signInWithEmail(values.email, values.password)}
+              className="btn bg-green-600 text-white w-full hover:bg-green-700 my-2"
+              disabled={!isValid}>
               Log In
             </button>
             <div>
