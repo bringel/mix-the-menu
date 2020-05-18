@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import Layout from '../components/Layout/Layout';
 import CategorySettings from './CategorySettings';
+import MealPlanSettings from './MealPlanSettings';
 
 type Props = {};
 
@@ -31,6 +32,7 @@ const Settings = (props: Props) => {
           <div className="col-span-3">
             <Routes>
               <Route path="categories" element={<CategorySettings />} />
+              <Route path="meal-plan" element={<MealPlanSettings />} />
             </Routes>
           </div>
         </div>

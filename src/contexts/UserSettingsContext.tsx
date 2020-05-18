@@ -11,6 +11,15 @@ type UserSettingsContextValue = {
   removeCategory: (id: string) => Promise<void>;
 };
 
+const defaultSettings: UserSettings = {
+  categories: [],
+  startMealPlanOn: 'Sunday',
+  includeLunch: true,
+  includeDinner: true,
+  leftoversCount: 0,
+  takeoutCount: 0
+};
+
 export const UserSettingsContext = React.createContext<UserSettingsContextValue | null>(null);
 
 export const useUserSettingsContext = () => {
@@ -51,6 +60,7 @@ export const UserSettingsContextProvider = (props: Props) => {
           };
         } else {
           updatedSettings = {
+            ...defaultSettings,
             categories: [newCategory]
           };
         }
