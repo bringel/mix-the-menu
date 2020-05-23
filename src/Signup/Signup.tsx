@@ -58,13 +58,21 @@ const Signup = (props: Props) => {
       <div className="flex justify-center">
         <div className="bg-white rounded-sm m-3 px-4 py-6 border shadow-md flex-none w-full md:w-1/2 lg:w-1/4">
           <form onSubmit={e => e.preventDefault()}>
-            <label htmlFor="displayName">Name</label>
+            <label htmlFor="displayName" className="label">
+              Name
+            </label>
             <input name="displayName" type="text" onChange={handleChange} className="input w-full mb-1" />
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email" className="label">
+              Email
+            </label>
             <input name="email" type="email" onChange={handleChange} className="input w-full mb-1" />
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password" className="label">
+              Password
+            </label>
             <input name="password" type="password" onChange={handleChange} className="input w-full mb-1" />
-            <label htmlFor="password">Verify Password</label>
+            <label htmlFor="password" className="label">
+              Verify Password
+            </label>
             <input name="passwordVerify" type="password" onChange={handleChange} className="input w-full mb-1" />
 
             <button

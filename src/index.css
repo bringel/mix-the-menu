@@ -15,7 +15,11 @@
 }
 
 .input {
-  @apply border rounded-sm  text-lg p-1;
+  @apply border rounded-sm text-base p-1;
+}
+
+.label {
+  @apply text-sm pb-1;
 }
 
 @tailwind utilities;
