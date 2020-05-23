@@ -3,17 +3,19 @@ import React, { useContext, useMemo } from 'react';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import { useFirestoreDocument } from '../firebase/useFirestoreDocument';
 import { collections } from '../firebaseCollections';
-import { UserSettings } from '../types/UserSettings';
+import { PlanSettings, UserSettings } from '../types/UserSettings';
 
 type UserSettingsContextValue = {
   settings: UserSettings | null | undefined;
   addCategory: (categoryName: string) => Promise<void>;
   removeCategory: (id: string) => Promise<void>;
+  updatePlanDefaultSettings: (settings: PlanSettings) => Promise<void>;
 };
 
 const defaultSettings: UserSettings = {
   categories: [],
   startMealPlanOn: 'Sunday',
+  includeBreakfast: true,
   includeLunch: true,
   includeDinner: true,
   leftoversCount: 0,
@@ -82,10 +84,23 @@ export const UserSettingsContextProvider = (props: Props) => {
       }
     };
 
+    const updatePlanDefaultSettings = (planSettings: PlanSettings) => {
+      if (settingsDocRef && settings) {
+        const updatedSettings = {
+          ...settings,
+          ...planSettings
+        };
+        return settingsDocRef.set(updatedSettings);
+      } else {
+        return Promise.reject(new Error('Could not get document ref to user settings'));
+      }
+    };
+
     return {
       settings: settings,
       addCategory: addCategory,
-      removeCategory: removeCategory
+      removeCategory: removeCategory,
+      updatePlanDefaultSettings: updatePlanDefaultSettings
     };
   }, [settings, settingsDocRef]);
   return <UserSettingsContext.Provider value={value}>{props.children}</UserSettingsContext.Provider>;
