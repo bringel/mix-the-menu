@@ -15,7 +15,7 @@ const Layout = (props: Props) => {
         {isSignedIn && (
           <ul className="flex justify-end items-center">
             <li className="ml-2">
-              <Link to="user/settings" className="text-green-600">
+              <Link to="user/settings" className="text-primary-500">
                 Settings
               </Link>
             </li>

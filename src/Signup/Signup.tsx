@@ -70,7 +70,7 @@ const Signup = (props: Props) => {
             <button
               type="submit"
               className={classnames('btn text-white w-full my-2', {
-                'bg-green-600': isValid,
+                'bg-primary-500': isValid,
                 'hover:bg-green-700': isValid,
                 'bg-gray-500': !isValid
               })}

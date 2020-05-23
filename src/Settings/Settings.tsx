@@ -17,12 +17,12 @@ const Settings = (props: Props) => {
             <nav>
               <ul>
                 <li className="mb-2">
-                  <NavLink to="categories" className="px-3 py-2" activeClassName="text-white bg-green-600 rounded">
+                  <NavLink to="categories" className="px-3 py-2" activeClassName="text-white bg-primary-500 rounded">
                     Categories
                   </NavLink>
                 </li>
                 <li className="mb-2">
-                  <NavLink to="meal-plan" className="px-3 py-2" activeClassName="text-white bg-green-600 rounded">
+                  <NavLink to="meal-plan" className="px-3 py-2" activeClassName="text-white bg-primary-500 rounded">
                     Meal Plan
                   </NavLink>
                 </li>

@@ -54,13 +54,13 @@ const Login = (props: Props) => {
             />
             <button
               onClick={() => signInWithEmail(values.email, values.password)}
-              className="btn bg-green-600 text-white w-full hover:bg-green-700 my-2"
+              className="btn bg-primary-500 text-white w-full hover:bg-green-700 my-2"
               disabled={!isValid}>
               Log In
             </button>
             <div>
               Don't have an account?&nbsp;
-              <Link to="/signup" className="text-green-600 underline">
+              <Link to="/signup" className="text-primary-500 underline">
                 Sign Up
               </Link>
             </div>
