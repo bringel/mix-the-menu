@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   theme: {
     extend: {
@@ -59,6 +61,10 @@ module.exports = {
           900: '#461414'
         }
       }
+    },
+    fontFamily: {
+      header: ['Lato', ...defaultTheme.fontFamily.sans],
+      body: defaultTheme.fontFamily.sans
     }
   },
   variants: {},

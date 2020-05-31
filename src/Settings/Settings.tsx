@@ -10,19 +10,25 @@ const Settings = (props: Props) => {
   return (
     <Layout>
       <div className="container mx-auto">
-        <h2 className="text-xl mb-2">User Settings</h2>
+        <h2 className="text-xl mb-2 font-header">User Settings</h2>
 
         <div className="grid grid-cols-4">
           <div className="col-start-1">
             <nav>
               <ul>
                 <li className="mb-2">
-                  <NavLink to="categories" className="px-3 py-2" activeClassName="text-white bg-primary-500 rounded">
+                  <NavLink
+                    to="categories"
+                    className="px-3 py-2 font-header"
+                    activeClassName="text-white bg-primary-500 rounded">
                     Categories
                   </NavLink>
                 </li>
                 <li className="mb-2">
-                  <NavLink to="meal-plan" className="px-3 py-2" activeClassName="text-white bg-primary-500 rounded">
+                  <NavLink
+                    to="meal-plan"
+                    className="px-3 py-2 font-header"
+                    activeClassName="text-white bg-primary-500 rounded">
                     Meal Plan
                   </NavLink>
                 </li>

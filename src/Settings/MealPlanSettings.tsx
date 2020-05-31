@@ -78,7 +78,7 @@ const MealPlanSettings = (props: Props) => {
 
   return (
     <>
-      <h3 className="text-lg">Meal Plan Settings</h3>
+      <h3 className="text-lg font-header">Meal Plan Settings</h3>
       <p className="text-base italic my-2">
         These settings will be used as defaults when creating a new meal plan. <br />
         You can adjust them for a new meal plan when you create one.

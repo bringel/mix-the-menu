@@ -35,7 +35,7 @@ const CategorySettings = (props: Props) => {
 
   return (
     <>
-      <h3 className="text-lg">Meal Categories</h3>
+      <h3 className="text-lg font-header">Meal Categories</h3>
       {settings && (
         <div className="border border-gray-600 rounded-sm">
           <div className="flex flex-row">

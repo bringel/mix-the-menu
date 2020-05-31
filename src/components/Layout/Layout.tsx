@@ -11,7 +11,7 @@ const Layout = (props: Props) => {
   return (
     <div className="py-2 px-4 min-h-screen bg-gray-100">
       <nav className="flex justify-between mb-2">
-        <h1 className="text-2xl">Mix the Menu</h1>
+        <h1 className="text-2xl font-header font-black">Mix the Menu</h1>
         {isSignedIn && (
           <ul className="flex justify-end items-center">
             <li className="ml-2">
