@@ -1,11 +1,12 @@
 import React, { KeyboardEvent, useCallback, useState } from 'react';
+import { X } from 'react-feather';
 import { useUserSettingsContext } from '../contexts/UserSettingsContext';
 
 type Props = {};
 
 const CategorySettings = (props: Props) => {
   const [categoryToAdd, setCategoryToAdd] = useState('');
-  const { settings, addCategory } = useUserSettingsContext();
+  const { settings, addCategory, removeCategory } = useUserSettingsContext();
 
   let enteringDuplicate = false;
   if (settings) {
@@ -33,6 +34,10 @@ const CategorySettings = (props: Props) => {
     [addMealCategory]
   );
 
+  const handleDeleteClicked = (id: string) => {
+    removeCategory(id);
+  };
+
   return (
     <>
       <h3 className="text-lg font-header">Meal Categories</h3>
@@ -56,13 +61,14 @@ const CategorySettings = (props: Props) => {
           </div>
           {settings?.categories.length ? (
             settings.categories.map(c => (
-              <div key={c.id} className="p-2 border-t border-gray-600">
-                {c.displayName}
+              <div key={c.id} className="border-t border-gray-600 flex flex-row justify-between content-center p-2">
+                <span>{c.displayName}</span>
+                <X className="hover:text-error-500 cursor-pointer" onClick={() => handleDeleteClicked(c.id)} />
               </div>
             ))
           ) : (
             <div className="p-8 flex justify-center italic text-gray-600">
-              You have no saved meal categories. Add some categories so you can create your first randomized meal plan{' '}
+              You have no saved meal categories. Add some categories so you can create your first randomized meal plan
             </div>
           )}
         </div>
