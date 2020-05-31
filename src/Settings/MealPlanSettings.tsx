@@ -1,4 +1,9 @@
-import { Field, Form, Formik } from 'formik';
+import {
+  ErrorMessage,
+  Field,
+  Form,
+  Formik
+  } from 'formik';
 import React, { useCallback, useMemo } from 'react';
 import * as yup from 'yup';
 import { useUserSettingsContext } from '../contexts/UserSettingsContext';
@@ -16,14 +21,14 @@ const schema = yup
     dinner: yup.boolean().required(),
     leftovers: yup
       .number()
-      .integer()
-      .min(0)
-      .required(),
+      .integer('Number of leftovers days needs to be an integer')
+      .min(0, 'Number of leftovers days must be 0 or more')
+      .required('Required'),
     takeout: yup
       .number()
-      .integer()
-      .min(0)
-      .required()
+      .integer('Number of takeout days needs to be an integer')
+      .min(0, 'Number of takeout days must be 0 or more')
+      .required('Required')
   })
   .defined();
 
@@ -76,7 +81,7 @@ const MealPlanSettings = (props: Props) => {
       <h3 className="text-lg">Meal Plan Settings</h3>
       <p className="text-base italic my-2">
         These settings will be used as defaults when creating a new meal plan. <br />
-        You can adjust them for a new meal plan when you create it.
+        You can adjust them for a new meal plan when you create one.
       </p>
       <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSave}>
         {formik => (
@@ -109,13 +114,14 @@ const MealPlanSettings = (props: Props) => {
               Leftovers meals
             </label>
             <Field type="number" className="input mb-1" name="leftovers" />
+            <ErrorMessage name="leftovers" component="div" className="text-error-500 text-sm" />
             <label className="label" htmlFor="takeout">
               Takeout meals
             </label>
-            <Field type="number" className="input mb-2" name="takeout" />
-
+            <Field type="number" className="input mb-1" name="takeout" />
+            <ErrorMessage name="takeout" component="div" className="text-error-500 text-sm mb-1" />
             <button
-              className="btn bg-primary-500 text-white"
+              className="btn bg-primary-500 text-white mt-2"
               disabled={!formik.isValid || formik.isSubmitting}
               type="submit">
               Save
