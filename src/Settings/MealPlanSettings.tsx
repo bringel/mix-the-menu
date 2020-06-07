@@ -1,9 +1,4 @@
-import {
-  ErrorMessage,
-  Field,
-  Form,
-  Formik
-  } from 'formik';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useCallback, useMemo } from 'react';
 import * as yup from 'yup';
 import { useUserSettingsContext } from '../contexts/UserSettingsContext';
@@ -121,7 +116,7 @@ const MealPlanSettings = (props: Props) => {
             <Field type="number" className="input mb-1" name="takeout" />
             <ErrorMessage name="takeout" component="div" className="text-error-500 text-sm mb-1" />
             <button
-              className="btn bg-primary-500 text-white mt-2"
+              className="btn bg-primary-500 hover:bg-primary-600 text-white mt-2"
               disabled={!formik.isValid || formik.isSubmitting}
               type="submit">
               Save

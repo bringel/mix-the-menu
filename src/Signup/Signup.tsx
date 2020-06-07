@@ -79,7 +79,7 @@ const Signup = (props: Props) => {
 
                 <button
                   type="submit"
-                  className="btn bg-primary-500 text-white w-full my-2"
+                  className="btn bg-primary-500 hover:bg-primary-600 text-white w-full my-2"
                   disabled={!formik.isValid || formik.isSubmitting}>
                   Sign Up
                 </button>

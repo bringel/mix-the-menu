@@ -54,7 +54,7 @@ const CategorySettings = (props: Props) => {
             />
             <button
               onClick={addMealCategory}
-              className="btn bg-primary-500 rounded-none text-white"
+              className="btn bg-primary-500 hover:bg-primary-600 rounded-none text-white"
               disabled={enteringDuplicate}>
               Add
             </button>

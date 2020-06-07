@@ -53,7 +53,7 @@ const Login = (props: Props) => {
                 <Field name="password" type="password" className="input w-full mb-1" />
                 <button
                   type="submit"
-                  className="btn bg-primary-500 text-white w-full hover:bg-green-700 my-2"
+                  className="btn bg-primary-500 text-white text-lg w-full hover:bg-green-700 my-2"
                   disabled={!formikProps.isValid || formikProps.isSubmitting}>
                   Log In
                 </button>
@@ -68,19 +68,19 @@ const Login = (props: Props) => {
           </div>
           <button
             onClick={() => signInWithFacebook()}
-            className="btn mt-2 bg-facebook hover:bg-facebook-darker text-white w-full flex align-center px-10">
+            className="btn mt-2 bg-facebook hover:bg-facebook-darker text-white text-lg w-full flex align-center px-10">
             <img src={facebook} width={24} height={24} className="mr-4" alt="facebook logo" />
             Sign in with Facebook
           </button>
           <button
             onClick={() => signInWithGoogle()}
-            className="btn mt-2 bg-google hover:bg-google-darker text-white w-full flex align-center px-10">
+            className="btn mt-2 bg-google hover:bg-google-darker text-white text-lg w-full flex align-center px-10">
             <img src={google} width={24} height={24} className="mr-4" alt="google logo" />
             Sign in with Google
           </button>
           <button
             onClick={() => signInWithMicrosoft()}
-            className="btn mt-2 bg-microsoft hover:bg-microsoft-darker text-white w-full flex align-center px-10">
+            className="btn mt-2 bg-microsoft hover:bg-microsoft-darker text-white text-lg w-full flex align-center px-10">
             <img src={microsoft} width={24} height={24} className="mr-4" alt="microsoft logo" />
             Sign in with Microsoft
           </button>

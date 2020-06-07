@@ -22,7 +22,7 @@ const Dashboard = (props: Props) => {
           </div>
           <div className="col-span-1 border rounded py-2 px-4">
             <h2 className="text-lg font-header mb-2">Create</h2>
-            <button className="btn bg-primary-500 text-white">Quick Create</button>
+            <button className="btn bg-primary-500 hover:bg-primary-600 text-white">Quick Create</button>
           </div>
           <div className="col-span-3">
             <h2 className="text-lg font-header">History</h2>
