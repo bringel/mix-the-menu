@@ -19,16 +19,16 @@ const Settings = (props: Props) => {
                 <li className="mb-2">
                   <NavLink
                     to="categories"
-                    className="px-3 py-2 font-header"
-                    activeClassName="text-white bg-primary-500 rounded">
+                    className="px-3 py-1 font-header w-full"
+                    activeClassName="border-b-2 border-primary-500">
                     Categories
                   </NavLink>
                 </li>
                 <li className="mb-2">
                   <NavLink
                     to="meal-plan"
-                    className="px-3 py-2 font-header"
-                    activeClassName="text-white bg-primary-500 rounded">
+                    className="px-3 py-1 font-header"
+                    activeClassName="border-b-2 border-primary-500">
                     Meal Plan
                   </NavLink>
                 </li>
