@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { UserSettingsContextProvider } from './contexts/UserSettingsContext';
+import CreateMealPlan from './Create/CreateMealPlan';
 import Dashboard from './Dashboard/Dashboard';
 import { AuthContextProvider } from './firebase/FirebaseAuthContext';
 import Login from './Login/Login';
@@ -17,6 +18,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/user/settings/*" element={<Settings />} />
+            <Route path="/create" element={<CreateMealPlan />} />
           </Routes>
         </UserSettingsContextProvider>
       </AuthContextProvider>

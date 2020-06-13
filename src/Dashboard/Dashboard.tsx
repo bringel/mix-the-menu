@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout/Layout';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 
@@ -20,9 +20,10 @@ const Dashboard = (props: Props) => {
           <div className="col-span-3">
             <h2 className="text-lg font-header">Current Meal Plan</h2>
           </div>
-          <div className="col-span-1 border rounded py-2 px-4">
-            <h2 className="text-lg font-header mb-2">Create</h2>
-            <button className="btn bg-primary-500 hover:bg-primary-600 text-white">Quick Create</button>
+          <div className="col-span-1 border rounded py-2 px-4 flex flex-col">
+            <Link className="btn bg-primary-500 hover:bg-primary-600 text-white flex-grow text-center" to="/create">
+              Create
+            </Link>
           </div>
           <div className="col-span-3">
             <h2 className="text-lg font-header">History</h2>
