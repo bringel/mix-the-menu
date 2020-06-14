@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import firebase from '../firebase';
 
-export function useFirestoreDocument<TDoc>(
+function useFirestoreDocument<TDoc>(
   collectionName: string,
   documentID: string,
   oneTimeSnapshot: boolean = false
@@ -42,3 +42,5 @@ export function useFirestoreDocument<TDoc>(
   }, [collectionName, documentID, oneTimeSnapshot]);
   return [doc, docRef, initialLoadFinished];
 }
+
+export default useFirestoreDocument;

@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import React, { useContext, useMemo } from 'react';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
-import { useFirestoreDocument } from '../firebase/useFirestoreDocument';
+import useFirestoreDocument from '../firebase/useFirestoreDocument';
 import { collections } from '../firebaseCollections';
 import { PlanSettings, UserSettings } from '../types/UserSettings';
 
