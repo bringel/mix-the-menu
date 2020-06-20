@@ -3,7 +3,8 @@ import React, { useContext, useMemo } from 'react';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import useFirestoreDocument from '../firebase/useFirestoreDocument';
 import { collections } from '../firebaseCollections';
-import { PlanSettings, UserSettings } from '../types/UserSettings';
+import { PlanSettings } from '../types/PlanSettings';
+import { UserSettings } from '../types/UserSettings';
 
 type UserSettingsContextValue = {
   settings: UserSettings | null | undefined;
