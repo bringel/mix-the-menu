@@ -1,20 +1,18 @@
 import { Field, Form, Formik } from 'formik';
-import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import Layout from '../components/Layout/Layout';
-import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import useFirebaseAuth from '../firebase/useFirebaseAuth';
 import facebook from '../images/facebook_white.svg';
 import google from '../images/google_white.svg';
 import microsoft from '../images/microsoft_white.svg';
 
+
 type Props = {};
 
 const Login = (props: Props) => {
-  const navigate = useNavigate();
   const { signInWithGoogle, signInWithFacebook, signInWithMicrosoft, signInWithEmail } = useFirebaseAuth();
-  const authContext = useAuthContext();
 
   const schema = yup.object().shape({
     email: yup
@@ -23,12 +21,6 @@ const Login = (props: Props) => {
       .required(),
     password: yup.string().required()
   });
-
-  useEffect(() => {
-    if (authContext.isSignedIn) {
-      navigate('/');
-    }
-  }, [authContext.isSignedIn, navigate]);
 
   return (
     <Layout>

@@ -34,9 +34,9 @@ export const AuthContextProvider = (props: Props) => {
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onIdTokenChanged(user => {
-      setInitialized(true);
       setUser(user);
       setIsSignedIn(user !== null);
+      setInitialized(true);
     });
 
     return () => unsubscribe();
