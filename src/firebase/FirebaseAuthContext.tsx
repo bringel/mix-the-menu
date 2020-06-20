@@ -1,9 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-  } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import firebase from '../firebase';
 
 type AuthContextValue = {
@@ -27,16 +22,46 @@ type Props = {
   children: React.ReactNode;
 };
 
+type State = {
+  isSignedIn: boolean;
+  user: firebase.User | null;
+  initialized: boolean;
+};
+
+type TokenChangedAction = {
+  type: 'tokenChanged';
+  user: firebase.User | null;
+};
+
+type Actions = TokenChangedAction;
+
+function reducer(state: State, action: Actions): State {
+  switch (action.type) {
+    case 'tokenChanged':
+      return {
+        ...state,
+        user: action.user,
+        isSignedIn: action.user !== null,
+        initialized: true
+      };
+    default:
+      return state;
+  }
+}
+
 export const AuthContextProvider = (props: Props) => {
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  const [user, setUser] = useState<firebase.User | null>(null);
-  const [initialized, setInitialized] = useState(false);
+  const [state, dispatch] = useReducer(reducer, {
+    isSignedIn: false,
+    user: null,
+    initialized: false
+  });
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onIdTokenChanged(user => {
-      setUser(user);
-      setIsSignedIn(user !== null);
-      setInitialized(true);
+      dispatch({
+        type: 'tokenChanged',
+        user: user
+      });
     });
 
     return () => unsubscribe();
@@ -46,13 +71,5 @@ export const AuthContextProvider = (props: Props) => {
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
   }, []);
 
-  const value = useMemo(() => {
-    return {
-      initialized: initialized,
-      isSignedIn: isSignedIn,
-      user: user
-    };
-  }, [initialized, isSignedIn, user]);
-
-  return <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={state}>{props.children}</AuthContext.Provider>;
 };
