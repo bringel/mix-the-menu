@@ -5,7 +5,7 @@ function useFirestoreComplexQuery<TDoc>(
   collectionName: string,
   buildQuery: (collection: firebase.firestore.CollectionReference) => firebase.firestore.Query,
   oneTimeSnapshot: boolean = false
-) {
+): [Array<TDoc> | null, boolean] {
   const [data, setData] = useState<Array<TDoc> | null>(null);
   const [loading, setLoading] = useState(true);
 

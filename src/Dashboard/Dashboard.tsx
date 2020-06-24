@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout/Layout';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
-import useFirestoreSimpleQuery from '../firebase/useFirestoreSimpleQuery';
+import useFirestoreComplexQuery from '../firebase/useFirestoreComplexQuery';
 import { collections } from '../firebaseCollections';
 import { MealPlan } from '../types/MealPlan';
 
@@ -10,12 +10,8 @@ type Props = {};
 
 const Dashboard = (props: Props) => {
   const authContext = useAuthContext();
-
-  const [mealPlans, mealPlansLoading] = useFirestoreSimpleQuery<MealPlan>(
-    collections.mealPlans,
-    'userID',
-    '==',
-    authContext.user?.uid ?? ''
+  const [mealPlans, mealPlansLoading] = useFirestoreComplexQuery<MealPlan>(collections.mealPlans, collection =>
+    collection.where('userID', '==', authContext.user?.uid ?? '').orderBy('startDate', 'desc')
   );
 
   return (
