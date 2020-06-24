@@ -1,3 +1,4 @@
 export const collections = {
-  userSettings: 'userSettings'
+  userSettings: 'userSettings',
+  mealPlans: 'mealPlans'
 };

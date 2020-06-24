@@ -7,7 +7,7 @@ function useFirestoreSimpleQuery<TDoc>(
   operator: firebase.firestore.WhereFilterOp,
   value: any,
   oneTimeSnapshot: boolean = false
-) {
+): [Array<TDoc> | null, boolean] {
   const [data, setData] = useState<Array<TDoc> | null>(null);
   const [loading, setLoading] = useState(true);
 
