@@ -10,10 +10,7 @@ type Props = {};
 
 const schema = yup.object().shape({
   displayName: yup.string().required(),
-  email: yup
-    .string()
-    .email()
-    .required(),
+  email: yup.string().email().required(),
   password: yup.string().required(),
   passwordVerify: yup
     .string()

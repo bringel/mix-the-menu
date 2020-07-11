@@ -8,17 +8,13 @@ import facebook from '../images/facebook_white.svg';
 import google from '../images/google_white.svg';
 import microsoft from '../images/microsoft_white.svg';
 
-
 type Props = {};
 
 const Login = (props: Props) => {
   const { signInWithGoogle, signInWithFacebook, signInWithMicrosoft, signInWithEmail } = useFirebaseAuth();
 
   const schema = yup.object().shape({
-    email: yup
-      .string()
-      .email()
-      .required(),
+    email: yup.string().email().required(),
     password: yup.string().required()
   });
 
