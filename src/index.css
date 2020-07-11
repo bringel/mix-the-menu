@@ -1,3 +1,48 @@
 @tailwind base;
+
 @tailwind components;
+
+.btn {
+  @apply py-2 px-4 rounded-md;
+}
+
+.btn:disabled {
+  @apply bg-gray-500 cursor-not-allowed;
+}
+
+.btn:disabled:hover {
+  @apply bg-gray-500;
+}
+
+.input {
+  @apply border rounded-sm text-base p-1;
+}
+
+.label {
+  @apply text-sm pb-1;
+}
+
 @tailwind utilities;
+
+@keyframes pulse {
+  from,
+  to {
+    @apply bg-gray-200;
+  }
+
+  25% {
+    @apply bg-gray-300;
+  }
+
+  50% {
+    @apply bg-gray-400;
+  }
+
+  75% {
+    @apply bg-gray-300;
+  }
+}
+
+.pulse-loader {
+  animation: pulse 2s ease-in infinite;
+}

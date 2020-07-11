@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "mix-the-menu"
+  },
+  "targets": {
+    "mix-the-menu": {
+      "hosting": {
+        "mix-the-menu-prod": [
+          "mix-the-menu"
+        ],
+        "mix-the-menu-dev": [
+          "mix-the-menu-dev"
+        ]
+      }
+    }
+  }
+}
