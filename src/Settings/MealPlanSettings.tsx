@@ -1,4 +1,9 @@
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import {
+  ErrorMessage,
+  Field,
+  Form,
+  Formik
+  } from 'formik';
 import React, { useCallback, useMemo } from 'react';
 import * as yup from 'yup';
 import { useUserSettingsContext } from '../contexts/UserSettingsContext';
@@ -11,9 +16,12 @@ const schema = yup
       .string()
       .oneOf(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
       .required(),
-    breakfast: yup.boolean().required(),
-    lunch: yup.boolean().required(),
-    dinner: yup.boolean().required(),
+    breakfastSlot: yup.boolean().required(),
+    lunchSlot: yup.boolean().required(),
+    dinnerSlot: yup.boolean().required(),
+    breakfastCategory: yup.boolean().required(),
+    lunchCategory: yup.boolean().required(),
+    dinnerCategory: yup.boolean().required(),
     leftovers: yup
       .number()
       .integer('Number of leftovers days needs to be an integer')
@@ -36,18 +44,24 @@ const MealPlanSettings = (props: Props) => {
     if (settings) {
       return {
         startDay: settings.startMealPlanOn,
-        breakfast: settings.includeBreakfast,
-        lunch: settings.includeLunch,
-        dinner: settings.includeDinner,
+        breakfastSlot: settings.includeSlots?.breakfast,
+        lunchSlot: settings.includeSlots?.lunch,
+        dinnerSlot: settings.includeSlots?.dinner,
+        breakfastCategory: settings.includeCategories?.breakfast,
+        lunchCategory: settings.includeCategories?.lunch,
+        dinnerCategory: settings.includeCategories?.dinner,
         leftovers: settings.leftoversCount,
         takeout: settings.takeoutCount
       };
     } else {
       return {
         startDay: 'Sunday',
-        breakfast: true,
-        lunch: true,
-        dinner: true,
+        breakfastSlot: true,
+        lunchSlot: true,
+        dinnerSlot: true,
+        breakfastCategory: false,
+        lunchCategory: true,
+        dinnerCategory: true,
         leftovers: 0,
         takeout: 0
       };
@@ -59,9 +73,16 @@ const MealPlanSettings = (props: Props) => {
       if (values !== undefined && values !== null) {
         const settings = {
           startMealPlanOn: values.startDay,
-          includeBreakfast: values.breakfast,
-          includeLunch: values.lunch,
-          includeDinner: values.dinner,
+          includeSlots: {
+            breakfast: values.breakfastSlot,
+            lunch: values.lunchSlot,
+            dinner: values.dinnerSlot
+          },
+          includeCategories: {
+            breakfast: values.breakfastCategory,
+            lunch: values.lunchCategory,
+            dinner: values.dinnerCategory
+          },
           leftoversCount: values.leftovers,
           takeoutCount: values.takeout
         };
@@ -93,18 +114,36 @@ const MealPlanSettings = (props: Props) => {
               <option>Friday</option>
               <option>Saturday</option>
             </Field>
-            <label className="label text-base mb-1" htmlFor="breakfast">
-              Include Breakfast?
-              <Field type="checkbox" name="breakfast" className="ml-2" />
-            </label>
-            <label className="label text-base mb-1" htmlFor="lunch">
-              Include Lunch?
-              <Field type="checkbox" name="lunch" className="ml-2" />
-            </label>
-            <label className="label text-base mb-1" htmlFor="dinner">
-              Include Dinner?
-              <Field type="checkbox" name="dinner" className="ml-2" />
-            </label>
+            <div className="mb-2">
+              <p className="text-base italic">Include meal plan slots for:</p>
+              <label className="text-base mr-4 align-middle" htmlFor="breakfast">
+                <Field type="checkbox" name="breakfastSlot" className="mr-1" />
+                Breakfast
+              </label>
+              <label className="text-base mr-4 align-middle" htmlFor="lunch">
+                <Field type="checkbox" name="lunchSlot" className="mr-1" />
+                Lunch
+              </label>
+              <label className="text-base align-middle" htmlFor="dinner">
+                <Field type="checkbox" name="dinnerSlot" className="mr-1" />
+                Dinner
+              </label>
+            </div>
+            <div className="mb-2">
+              <p className="text-base italic">Pick random category for:</p>
+              <label className="text-base mr-4 align-middle" htmlFor="breakfast">
+                <Field type="checkbox" name="breakfastCategory" className="mr-1" />
+                Breakfast
+              </label>
+              <label className="text-base mr-4 align-middle" htmlFor="lunch">
+                <Field type="checkbox" name="lunchCategory" className="mr-1" />
+                Lunch
+              </label>
+              <label className="text-base align-middle" htmlFor="dinner">
+                <Field type="checkbox" name="dinnerCategory" className="mr-1" />
+                Dinner
+              </label>
+            </div>
             <label className="label" htmlFor="leftovers">
               Leftovers meals
             </label>
