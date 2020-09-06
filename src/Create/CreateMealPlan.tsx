@@ -1,9 +1,4 @@
-import {
-  ErrorMessage,
-  Field,
-  Form,
-  Formik
-  } from 'formik';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useMemo } from 'react';
 import * as yup from 'yup';
 import Layout from '../components/Layout/Layout';
@@ -33,7 +28,8 @@ const schema = yup
       .number()
       .integer('Number of takeout days needs to be an integer')
       .min(0, 'Number of takeout days must be 0 or more')
-      .required('Required')
+      .required('Required'),
+    categories: yup.array().min(1, 'You must have at least one category enabled')
   })
   .defined();
 
@@ -53,7 +49,8 @@ const CreateMealPlan = (props: Props) => {
         lunchCategory: settings.includeCategories?.lunch,
         dinnerCategory: settings.includeCategories?.dinner,
         leftovers: settings.leftoversCount,
-        takeout: settings.takeoutCount
+        takeout: settings.takeoutCount,
+        categories: settings.categories.map(c => c.id)
       };
     } else {
       return {
@@ -65,7 +62,8 @@ const CreateMealPlan = (props: Props) => {
         lunchCategory: true,
         dinnerCategory: true,
         leftovers: 0,
-        takeout: 0
+        takeout: 0,
+        categories: []
       };
     }
   }, [settings]);
@@ -127,6 +125,16 @@ const CreateMealPlan = (props: Props) => {
             </label>
             <Field type="number" className="input mb-1" name="takeout" />
             <ErrorMessage name="takeout" component="div" className="text-error-500 text-sm mb-1" />
+            <div className="text-lg mt-2">Enabled Categories</div>
+            {settings?.categories.map(c => {
+              return (
+                <label className="text-base mr-4 align-middle" htmlFor={c.id} key={c.id}>
+                  <Field type="checkbox" name="categories" className="mr-1" value={c.id} id={c.id} />
+                  {c.displayName}
+                </label>
+              );
+            })}
+            <ErrorMessage name="categories" component="div" className="text-error-500 text-sm mb-1" />
             <button
               className="btn bg-primary-500 hover:bg-primary-600 text-white mt-2"
               disabled={!formik.isValid || formik.isSubmitting}
