@@ -4,7 +4,7 @@ import { PlanSettings } from './PlanSettings';
 export type MealPlanSlot = {
   day: DayOfWeek;
   time: MealTime;
-  categoryID: string;
+  categoryID: string | null;
   recipeName: string | null;
   recipeLink: string | null;
 };

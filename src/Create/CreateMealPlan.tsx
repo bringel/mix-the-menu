@@ -1,8 +1,95 @@
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useMemo } from 'react';
+import { addDays, getDay, startOfDay } from 'date-fns';
+import {
+  ErrorMessage,
+  Field,
+  Form,
+  Formik
+  } from 'formik';
+import React, { useCallback, useMemo } from 'react';
 import * as yup from 'yup';
 import Layout from '../components/Layout/Layout';
 import { useUserSettingsContext } from '../contexts/UserSettingsContext';
+import firebase from '../firebase';
+import { useAuthContext } from '../firebase/FirebaseAuthContext';
+import { collections } from '../firebaseCollections';
+import { DayOfWeek, MealTime } from '../types/DayAndTime';
+import { MealPlan, MealPlanSlot } from '../types/MealPlan';
+import { MealCategory } from '../types/UserSettings';
+
+function createMealPlanData(formValues: Values, userID: string, userCategories: Array<MealCategory>): MealPlan {
+  const enabledCategories = userCategories.filter(c => formValues.categories.includes(c.id));
+  const planSettings = {
+    startMealPlanOn: formValues.startDay,
+    includeSlots: {
+      breakfast: formValues.breakfastSlot,
+      lunch: formValues.lunchSlot,
+      dinner: formValues.dinnerSlot
+    },
+    includeCategories: {
+      breakfast: formValues.breakfastCategory,
+      lunch: formValues.lunchCategory,
+      dinner: formValues.dinnerCategory
+    },
+    leftoversCount: formValues.leftovers,
+    takeoutCount: formValues.takeout
+  };
+
+  let startDate = startOfDay(new Date());
+  let foundDay = false;
+  while (!foundDay) {
+    startDate = addDays(startDate, 1);
+    foundDay = getDay(startDate) === formValues.startDay;
+  }
+
+  const slots: Array<MealPlanSlot> = [];
+  for (let i = 0; i < 7; i++) {
+    if (formValues.breakfastSlot) {
+      slots.push({
+        day: i,
+        time: MealTime.Breakfast,
+        categoryID: null,
+        recipeName: null,
+        recipeLink: null
+      });
+    }
+    if (formValues.lunchSlot) {
+      slots.push({
+        day: i,
+        time: MealTime.Lunch,
+        categoryID: null,
+        recipeName: null,
+        recipeLink: null
+      });
+    }
+    if (formValues.dinnerSlot) {
+      slots.push({
+        day: i,
+        time: MealTime.Dinner,
+        categoryID: null,
+        recipeName: null,
+        recipeLink: null
+      });
+    }
+  }
+
+  for (let i = 0; i < slots.length; i++) {
+    if (
+      (slots[i].time === MealTime.Breakfast && formValues.breakfastCategory) ||
+      (slots[i].time === MealTime.Lunch && formValues.lunchCategory) ||
+      (slots[i].time === MealTime.Dinner && formValues.dinnerCategory)
+    ) {
+      const categoryIndex = Math.floor(Math.random() * enabledCategories.length);
+      slots[i].categoryID = enabledCategories[categoryIndex].id;
+    }
+  }
+
+  return {
+    userID: userID,
+    startDate: firebase.firestore.Timestamp.fromDate(startDate),
+    settings: planSettings,
+    slots: slots
+  };
+}
 
 type Props = {};
 
@@ -10,8 +97,16 @@ const schema = yup
   .object()
   .shape({
     startDay: yup
-      .string()
-      .oneOf(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
+      .number()
+      .oneOf([
+        DayOfWeek.Sunday,
+        DayOfWeek.Monday,
+        DayOfWeek.Tuesday,
+        DayOfWeek.Wednesday,
+        DayOfWeek.Thursday,
+        DayOfWeek.Friday,
+        DayOfWeek.Saturday
+      ])
       .required(),
     breakfastSlot: yup.boolean().required(),
     lunchSlot: yup.boolean().required(),
@@ -29,13 +124,14 @@ const schema = yup
       .integer('Number of takeout days needs to be an integer')
       .min(0, 'Number of takeout days must be 0 or more')
       .required('Required'),
-    categories: yup.array().min(1, 'You must have at least one category enabled')
+    categories: yup.array().min(1, 'You must have at least one category enabled').required()
   })
   .defined();
 
 type Values = yup.InferType<typeof schema>;
 
 const CreateMealPlan = (props: Props) => {
+  const { user } = useAuthContext();
   const { settings } = useUserSettingsContext();
 
   const initialValues: Values = useMemo(() => {
@@ -54,7 +150,7 @@ const CreateMealPlan = (props: Props) => {
       };
     } else {
       return {
-        startDay: 'Sunday',
+        startDay: DayOfWeek.Sunday,
         breakfastSlot: true,
         lunchSlot: true,
         dinnerSlot: true,
@@ -67,23 +163,34 @@ const CreateMealPlan = (props: Props) => {
       };
     }
   }, [settings]);
+
+  const handleSubmit = useCallback(
+    formValues => {
+      const mealPlanData = createMealPlanData(formValues, user?.uid ?? '', settings?.categories ?? []);
+      const firestore = firebase.firestore();
+      const collection = firestore.collection(collections.mealPlans);
+      return collection.add(mealPlanData);
+    },
+    [settings, user]
+  );
+
   return (
     <Layout>
       <h2 className="text-xl font-header mb-4">Create a Meal Plan</h2>
-      <Formik initialValues={initialValues} validationSchema={schema} onSubmit={() => {}}>
+      <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
         {formik => (
           <Form className="flex flex-col w-1/3">
             <label className="label" htmlFor="startDay">
               Start meal plan
             </label>
             <Field as="select" name="startDay" className="input mb-2">
-              <option>Sunday</option>
-              <option>Monday</option>
-              <option>Tuesday</option>
-              <option>Wednesday</option>
-              <option>Thursday</option>
-              <option>Friday</option>
-              <option>Saturday</option>
+              <option value={DayOfWeek.Sunday}>Sunday</option>
+              <option value={DayOfWeek.Monday}>Monday</option>
+              <option value={DayOfWeek.Tuesday}>Tuesday</option>
+              <option value={DayOfWeek.Wednesday}>Wednesday</option>
+              <option value={DayOfWeek.Thursday}>Thursday</option>
+              <option value={DayOfWeek.Friday}>Friday</option>
+              <option value={DayOfWeek.Saturday}>Saturday</option>
             </Field>
             <div className="mb-2">
               <p className="text-base italic">Include meal plan slots for:</p>

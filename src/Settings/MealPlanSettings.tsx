@@ -7,14 +7,23 @@ import {
 import React, { useCallback, useMemo } from 'react';
 import * as yup from 'yup';
 import { useUserSettingsContext } from '../contexts/UserSettingsContext';
+import { DayOfWeek } from '../types/DayAndTime';
 
 type Props = {};
 const schema = yup
   .object()
   .shape({
     startDay: yup
-      .string()
-      .oneOf(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
+      .number()
+      .oneOf([
+        DayOfWeek.Sunday,
+        DayOfWeek.Monday,
+        DayOfWeek.Tuesday,
+        DayOfWeek.Wednesday,
+        DayOfWeek.Thursday,
+        DayOfWeek.Friday,
+        DayOfWeek.Saturday
+      ])
       .required(),
     breakfastSlot: yup.boolean().required(),
     lunchSlot: yup.boolean().required(),
@@ -55,7 +64,7 @@ const MealPlanSettings = (props: Props) => {
       };
     } else {
       return {
-        startDay: 'Sunday',
+        startDay: DayOfWeek.Sunday,
         breakfastSlot: true,
         lunchSlot: true,
         dinnerSlot: true,
@@ -106,13 +115,13 @@ const MealPlanSettings = (props: Props) => {
               Start meal plans on
             </label>
             <Field as="select" name="startDay" className="input mb-2">
-              <option>Sunday</option>
-              <option>Monday</option>
-              <option>Tuesday</option>
-              <option>Wednesday</option>
-              <option>Thursday</option>
-              <option>Friday</option>
-              <option>Saturday</option>
+              <option value={DayOfWeek.Sunday}>Sunday</option>
+              <option value={DayOfWeek.Monday}>Monday</option>
+              <option value={DayOfWeek.Tuesday}>Tuesday</option>
+              <option value={DayOfWeek.Wednesday}>Wednesday</option>
+              <option value={DayOfWeek.Thursday}>Thursday</option>
+              <option value={DayOfWeek.Friday}>Friday</option>
+              <option value={DayOfWeek.Saturday}>Saturday</option>
             </Field>
             <div className="mb-2">
               <p className="text-base italic">Include meal plan slots for:</p>
