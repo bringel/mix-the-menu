@@ -1,10 +1,5 @@
 import { addDays, getDay, startOfDay } from 'date-fns';
-import {
-  ErrorMessage,
-  Field,
-  Form,
-  Formik
-  } from 'formik';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useCallback, useMemo } from 'react';
 import * as yup from 'yup';
 import Layout from '../components/Layout/Layout';
@@ -13,7 +8,7 @@ import firebase from '../firebase';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import { collections } from '../firebaseCollections';
 import { DayOfWeek, MealTime } from '../types/DayAndTime';
-import { MealPlan, MealPlanSlot } from '../types/MealPlan';
+import { MealPlan, MealPlanDay, MealPlanSlot } from '../types/MealPlan';
 import { MealCategory } from '../types/UserSettings';
 
 function createMealPlanData(formValues: Values, userID: string, userCategories: Array<MealCategory>): MealPlan {
@@ -41,11 +36,11 @@ function createMealPlanData(formValues: Values, userID: string, userCategories: 
     foundDay = getDay(startDate) === formValues.startDay;
   }
 
-  const slots: Array<MealPlanSlot> = [];
+  const days: Array<MealPlanDay> = [];
   for (let i = 0; i < 7; i++) {
+    const slots: Array<MealPlanSlot> = [];
     if (formValues.breakfastSlot) {
       slots.push({
-        day: i,
         time: MealTime.Breakfast,
         categoryID: null,
         recipeName: null,
@@ -54,7 +49,6 @@ function createMealPlanData(formValues: Values, userID: string, userCategories: 
     }
     if (formValues.lunchSlot) {
       slots.push({
-        day: i,
         time: MealTime.Lunch,
         categoryID: null,
         recipeName: null,
@@ -63,23 +57,26 @@ function createMealPlanData(formValues: Values, userID: string, userCategories: 
     }
     if (formValues.dinnerSlot) {
       slots.push({
-        day: i,
         time: MealTime.Dinner,
         categoryID: null,
         recipeName: null,
         recipeLink: null
       });
     }
+
+    days.push({ dayOfWeek: i, slots: slots });
   }
 
-  for (let i = 0; i < slots.length; i++) {
-    if (
-      (slots[i].time === MealTime.Breakfast && formValues.breakfastCategory) ||
-      (slots[i].time === MealTime.Lunch && formValues.lunchCategory) ||
-      (slots[i].time === MealTime.Dinner && formValues.dinnerCategory)
-    ) {
-      const categoryIndex = Math.floor(Math.random() * enabledCategories.length);
-      slots[i].categoryID = enabledCategories[categoryIndex].id;
+  for (let day of days) {
+    for (let slot of day.slots) {
+      if (
+        (slot.time === MealTime.Breakfast && formValues.breakfastCategory) ||
+        (slot.time === MealTime.Lunch && formValues.lunchCategory) ||
+        (slot.time === MealTime.Dinner && formValues.dinnerCategory)
+      ) {
+        const categoryIndex = Math.floor(Math.random() * enabledCategories.length);
+        slot.categoryID = enabledCategories[categoryIndex].id;
+      }
     }
   }
 
@@ -87,7 +84,7 @@ function createMealPlanData(formValues: Values, userID: string, userCategories: 
     userID: userID,
     startDate: firebase.firestore.Timestamp.fromDate(startDate),
     settings: planSettings,
-    slots: slots
+    days: days
   };
 }
 
