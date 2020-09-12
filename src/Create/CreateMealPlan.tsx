@@ -180,10 +180,8 @@ const CreateMealPlan = (props: Props) => {
       <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
         {formik => (
           <Form className="flex flex-col w-1/3">
-            <label className="label" htmlFor="startDay">
-              Start meal plan
-            </label>
-            <Field as="select" name="startDay" className="input mb-2">
+            <label htmlFor="startDay">Start meal plan</label>
+            <Field as="select" name="startDay" className="form-select mb-2">
               <option value={DayOfWeek.Sunday}>Sunday</option>
               <option value={DayOfWeek.Monday}>Monday</option>
               <option value={DayOfWeek.Tuesday}>Tuesday</option>
@@ -194,49 +192,45 @@ const CreateMealPlan = (props: Props) => {
             </Field>
             <div className="mb-2">
               <p className="text-base italic">Include meal plan slots for:</p>
-              <label className="text-base mr-4 align-middle" htmlFor="breakfast">
-                <Field type="checkbox" name="breakfastSlot" className="mr-1" />
+              <label className="mr-4 inline-flex items-center" htmlFor="breakfast">
+                <Field type="checkbox" name="breakfastSlot" className="mr-1 form-checkbox" />
                 Breakfast
               </label>
-              <label className="text-base mr-4 align-middle" htmlFor="lunch">
-                <Field type="checkbox" name="lunchSlot" className="mr-1" />
+              <label className="mr-4 inline-flex items-center" htmlFor="lunch">
+                <Field type="checkbox" name="lunchSlot" className="mr-1 form-checkbox" />
                 Lunch
               </label>
-              <label className="text-base align-middle" htmlFor="dinner">
-                <Field type="checkbox" name="dinnerSlot" className="mr-1" />
+              <label className="inline-flex items-center" htmlFor="dinner">
+                <Field type="checkbox" name="dinnerSlot" className="mr-1 form-checkbox" />
                 Dinner
               </label>
             </div>
             <div className="mb-2">
               <p className="text-base italic">Pick random category for:</p>
-              <label className="text-base mr-4 align-middle" htmlFor="breakfast">
-                <Field type="checkbox" name="breakfastCategory" className="mr-1" />
+              <label className="mr-4 inline-flex items-center" htmlFor="breakfast">
+                <Field type="checkbox" name="breakfastCategory" className="mr-1 form-checkbox" />
                 Breakfast
               </label>
-              <label className="text-base mr-4 align-middle" htmlFor="lunch">
-                <Field type="checkbox" name="lunchCategory" className="mr-1" />
+              <label className="mr-4 inline-flex items-center" htmlFor="lunch">
+                <Field type="checkbox" name="lunchCategory" className="mr-1 form-checkbox" />
                 Lunch
               </label>
-              <label className="text-base align-middle" htmlFor="dinner">
-                <Field type="checkbox" name="dinnerCategory" className="mr-1" />
+              <label className="inline-flex items-center" htmlFor="dinner">
+                <Field type="checkbox" name="dinnerCategory" className="mr-1 form-checkbox" />
                 Dinner
               </label>
             </div>
-            <label className="label" htmlFor="leftovers">
-              Leftovers meals
-            </label>
-            <Field type="number" className="input mb-1" name="leftovers" />
+            <label htmlFor="leftovers">Leftovers meals</label>
+            <Field type="number" className="form-input mb-1" name="leftovers" />
             <ErrorMessage name="leftovers" component="div" className="text-error-500 text-sm" />
-            <label className="label" htmlFor="takeout">
-              Takeout meals
-            </label>
-            <Field type="number" className="input mb-1" name="takeout" />
+            <label htmlFor="takeout">Takeout meals</label>
+            <Field type="number" className="form-input mb-1" name="takeout" />
             <ErrorMessage name="takeout" component="div" className="text-error-500 text-sm mb-1" />
             <div className="text-lg mt-2">Enabled Categories</div>
             {settings?.categories.map(c => {
               return (
                 <label className="text-base mr-4 align-middle" htmlFor={c.id} key={c.id}>
-                  <Field type="checkbox" name="categories" className="mr-1" value={c.id} id={c.id} />
+                  <Field type="checkbox" name="categories" className="mr-1 form-checkbox" value={c.id} id={c.id} />
                   {c.displayName}
                 </label>
               );

@@ -31,14 +31,10 @@ const Login = (props: Props) => {
             isInitialValid={false}>
             {formikProps => (
               <Form>
-                <label htmlFor="email" className="label">
-                  Email
-                </label>
-                <Field name="email" className="input w-full mb-1" />
-                <label htmlFor="password" className="label">
-                  Password
-                </label>
-                <Field name="password" type="password" className="input w-full mb-1" />
+                <label htmlFor="email">Email</label>
+                <Field name="email" className="form-input w-full mb-1" />
+                <label htmlFor="password">Password</label>
+                <Field name="password" type="password" className="form-input w-full mb-1" />
                 <button
                   type="submit"
                   className="btn bg-primary-500 text-white text-lg w-full hover:bg-green-700 my-2"

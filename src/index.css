@@ -18,10 +18,6 @@
   @apply border rounded-sm text-base p-1;
 }
 
-.label {
-  @apply text-sm pb-1;
-}
-
 @tailwind utilities;
 
 @keyframes pulse {

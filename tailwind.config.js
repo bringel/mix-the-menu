@@ -65,8 +65,21 @@ module.exports = {
     fontFamily: {
       header: ['Lato', ...defaultTheme.fontFamily.sans],
       body: defaultTheme.fontFamily.sans
-    }
+    },
+    customForms: theme => ({
+      default: {
+        'input, select, textarea, multiselect': {
+          paddingTop: theme('spacing.1'),
+          paddingRight: theme('spacing.2'),
+          paddingBottom: theme('spacing.1'),
+          paddingLeft: theme('spacing.2')
+        },
+        'checkbox, radio': {
+          color: theme('colors.accent.400')
+        }
+      }
+    })
   },
   variants: {},
-  plugins: []
+  plugins: [require('@tailwindcss/custom-forms')]
 };
