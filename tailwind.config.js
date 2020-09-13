@@ -72,10 +72,25 @@ module.exports = {
           paddingTop: theme('spacing.1'),
           paddingRight: theme('spacing.2'),
           paddingBottom: theme('spacing.1'),
-          paddingLeft: theme('spacing.2')
+          paddingLeft: theme('spacing.2'),
+          '&:disabled': {
+            backgroundColor: theme('colors.gray[100]')
+          },
+          '&[readonly]': {
+            backgroundColor: theme('colors.gray[100]')
+          }
         },
         'checkbox, radio': {
-          color: theme('colors.accent.400')
+          color: theme('colors.accent.400'),
+          '&:disabled': {
+            backgroundColor: theme('colors.gray[100]')
+          },
+          '&:disabled + *': {
+            color: theme('colors.gray[600]')
+          },
+          '&:disabled:checked': {
+            backgroundColor: theme('colors.gray[500]')
+          }
         }
       }
     })
