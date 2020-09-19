@@ -10,10 +10,7 @@ type Props = {};
 
 const schema = yup.object().shape({
   displayName: yup.string().required(),
-  email: yup
-    .string()
-    .email()
-    .required(),
+  email: yup.string().email().required(),
   password: yup.string().required(),
   passwordVerify: yup
     .string()
@@ -60,22 +57,14 @@ const Signup = (props: Props) => {
             isInitialValid={false}>
             {formik => (
               <Form>
-                <label htmlFor="displayName" className="label">
-                  Name
-                </label>
-                <Field name="displayName" type="text" className="input w-full mb-1" />
-                <label htmlFor="email" className="label">
-                  Email
-                </label>
-                <Field name="email" type="email" className="input w-full mb-1" />
-                <label htmlFor="password" className="label">
-                  Password
-                </label>
-                <Field name="password" type="password" className="input w-full mb-1" />
-                <label htmlFor="password" className="label">
-                  Verify Password
-                </label>
-                <Field name="passwordVerify" type="password" className="input w-full mb-1" />
+                <label htmlFor="displayName">Name</label>
+                <Field name="displayName" type="text" className="form-input w-full mb-1" />
+                <label htmlFor="email">Email</label>
+                <Field name="email" type="email" className="form-input w-full mb-1" />
+                <label htmlFor="password">Password</label>
+                <Field name="password" type="password" className="form-input w-full mb-1" />
+                <label htmlFor="password">Verify Password</label>
+                <Field name="passwordVerify" type="password" className="form-input w-full mb-1" />
 
                 <button
                   type="submit"

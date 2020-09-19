@@ -3,6 +3,7 @@ import React, { useContext, useMemo } from 'react';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import useFirestoreDocument from '../firebase/useFirestoreDocument';
 import { collections } from '../firebaseCollections';
+import { DayOfWeek } from '../types/DayAndTime';
 import { PlanSettings } from '../types/PlanSettings';
 import { UserSettings } from '../types/UserSettings';
 
@@ -15,10 +16,17 @@ type UserSettingsContextValue = {
 
 const defaultSettings: UserSettings = {
   categories: [],
-  startMealPlanOn: 'Sunday',
-  includeBreakfast: true,
-  includeLunch: true,
-  includeDinner: true,
+  startMealPlanOn: DayOfWeek.Sunday,
+  includeSlots: {
+    breakfast: true,
+    lunch: true,
+    dinner: true
+  },
+  includeCategories: {
+    breakfast: false,
+    lunch: true,
+    dinner: true
+  },
   leftoversCount: 0,
   takeoutCount: 0
 };

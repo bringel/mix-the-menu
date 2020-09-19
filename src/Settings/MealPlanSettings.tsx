@@ -1,19 +1,36 @@
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import {
+  ErrorMessage,
+  Field,
+  Form,
+  Formik
+  } from 'formik';
 import React, { useCallback, useMemo } from 'react';
 import * as yup from 'yup';
 import { useUserSettingsContext } from '../contexts/UserSettingsContext';
+import { DayOfWeek } from '../types/DayAndTime';
 
 type Props = {};
 const schema = yup
   .object()
   .shape({
     startDay: yup
-      .string()
-      .oneOf(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
+      .number()
+      .oneOf([
+        DayOfWeek.Sunday,
+        DayOfWeek.Monday,
+        DayOfWeek.Tuesday,
+        DayOfWeek.Wednesday,
+        DayOfWeek.Thursday,
+        DayOfWeek.Friday,
+        DayOfWeek.Saturday
+      ])
       .required(),
-    breakfast: yup.boolean().required(),
-    lunch: yup.boolean().required(),
-    dinner: yup.boolean().required(),
+    breakfastSlot: yup.boolean().required(),
+    lunchSlot: yup.boolean().required(),
+    dinnerSlot: yup.boolean().required(),
+    breakfastCategory: yup.boolean().required(),
+    lunchCategory: yup.boolean().required(),
+    dinnerCategory: yup.boolean().required(),
     leftovers: yup
       .number()
       .integer('Number of leftovers days needs to be an integer')
@@ -36,18 +53,24 @@ const MealPlanSettings = (props: Props) => {
     if (settings) {
       return {
         startDay: settings.startMealPlanOn,
-        breakfast: settings.includeBreakfast,
-        lunch: settings.includeLunch,
-        dinner: settings.includeDinner,
+        breakfastSlot: settings.includeSlots?.breakfast,
+        lunchSlot: settings.includeSlots?.lunch,
+        dinnerSlot: settings.includeSlots?.dinner,
+        breakfastCategory: settings.includeCategories?.breakfast,
+        lunchCategory: settings.includeCategories?.lunch,
+        dinnerCategory: settings.includeCategories?.dinner,
         leftovers: settings.leftoversCount,
         takeout: settings.takeoutCount
       };
     } else {
       return {
-        startDay: 'Sunday',
-        breakfast: true,
-        lunch: true,
-        dinner: true,
+        startDay: DayOfWeek.Sunday,
+        breakfastSlot: true,
+        lunchSlot: true,
+        dinnerSlot: true,
+        breakfastCategory: false,
+        lunchCategory: true,
+        dinnerCategory: true,
         leftovers: 0,
         takeout: 0
       };
@@ -59,9 +82,16 @@ const MealPlanSettings = (props: Props) => {
       if (values !== undefined && values !== null) {
         const settings = {
           startMealPlanOn: values.startDay,
-          includeBreakfast: values.breakfast,
-          includeLunch: values.lunch,
-          includeDinner: values.dinner,
+          includeSlots: {
+            breakfast: values.breakfastSlot,
+            lunch: values.lunchSlot,
+            dinner: values.dinnerSlot
+          },
+          includeCategories: {
+            breakfast: values.breakfastCategory,
+            lunch: values.lunchCategory,
+            dinner: values.dinnerCategory
+          },
           leftoversCount: values.leftovers,
           takeoutCount: values.takeout
         };
@@ -81,39 +111,51 @@ const MealPlanSettings = (props: Props) => {
       <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSave}>
         {formik => (
           <Form className="flex flex-col w-1/3">
-            <label className="label" htmlFor="startDay">
-              Start meal plans on
-            </label>
-            <Field as="select" name="startDay" className="input mb-2">
-              <option>Sunday</option>
-              <option>Monday</option>
-              <option>Tuesday</option>
-              <option>Wednesday</option>
-              <option>Thursday</option>
-              <option>Friday</option>
-              <option>Saturday</option>
+            <label htmlFor="startDay">Start meal plans on</label>
+            <Field as="select" name="startDay" className="form-select mb-2">
+              <option value={DayOfWeek.Sunday}>Sunday</option>
+              <option value={DayOfWeek.Monday}>Monday</option>
+              <option value={DayOfWeek.Tuesday}>Tuesday</option>
+              <option value={DayOfWeek.Wednesday}>Wednesday</option>
+              <option value={DayOfWeek.Thursday}>Thursday</option>
+              <option value={DayOfWeek.Friday}>Friday</option>
+              <option value={DayOfWeek.Saturday}>Saturday</option>
             </Field>
-            <label className="label text-base mb-1" htmlFor="breakfast">
-              Include Breakfast?
-              <Field type="checkbox" name="breakfast" className="ml-2" />
-            </label>
-            <label className="label text-base mb-1" htmlFor="lunch">
-              Include Lunch?
-              <Field type="checkbox" name="lunch" className="ml-2" />
-            </label>
-            <label className="label text-base mb-1" htmlFor="dinner">
-              Include Dinner?
-              <Field type="checkbox" name="dinner" className="ml-2" />
-            </label>
-            <label className="label" htmlFor="leftovers">
-              Leftovers meals
-            </label>
-            <Field type="number" className="input mb-1" name="leftovers" />
+            <div className="mb-2">
+              <p className="text-base italic">Include meal plan slots for:</p>
+              <label className="mr-4 inline-flex items-center" htmlFor="breakfast">
+                <Field type="checkbox" name="breakfastSlot" className="mr-1 form-checkbox" />
+                Breakfast
+              </label>
+              <label className="mr-4 inline-flex items-center" htmlFor="lunch">
+                <Field type="checkbox" name="lunchSlot" className="mr-1 form-checkbox" />
+                Lunch
+              </label>
+              <label className="inline-flex items-center" htmlFor="dinner">
+                <Field type="checkbox" name="dinnerSlot" className="mr-1 form-checkbox" />
+                Dinner
+              </label>
+            </div>
+            <div className="mb-2">
+              <p className="text-base italic">Pick random category for:</p>
+              <label className="mr-4 inline-flex items-center" htmlFor="breakfast">
+                <Field type="checkbox" name="breakfastCategory" className="mr-1 form-checkbox" />
+                Breakfast
+              </label>
+              <label className="mr-4 inline-flex items-center" htmlFor="lunch">
+                <Field type="checkbox" name="lunchCategory" className="mr-1 form-checkbox" />
+                Lunch
+              </label>
+              <label className="inline-flex items-center" htmlFor="dinner">
+                <Field type="checkbox" name="dinnerCategory" className="mr-1 form-checkbox" />
+                Dinner
+              </label>
+            </div>
+            <label htmlFor="leftovers">Leftovers meals</label>
+            <Field type="number" className="form-input mb-1" name="leftovers" />
             <ErrorMessage name="leftovers" component="div" className="text-error-500 text-sm" />
-            <label className="label" htmlFor="takeout">
-              Takeout meals
-            </label>
-            <Field type="number" className="input mb-1" name="takeout" />
+            <label htmlFor="takeout">Takeout meals</label>
+            <Field type="number" className="form-input mb-1" name="takeout" />
             <ErrorMessage name="takeout" component="div" className="text-error-500 text-sm mb-1" />
             <button
               className="btn bg-primary-500 hover:bg-primary-600 text-white mt-2"

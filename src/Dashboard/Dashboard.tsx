@@ -17,8 +17,8 @@ const Dashboard = (props: Props) => {
   return (
     <Layout>
       <div className="mx-4 grid grid-cols-4 row-gap-4 col-gap-4">
-        <div className="col-span-3">
-          <h2 className="text-lg font-header">Current Meal Plan</h2>
+        <h2 className="text-lg font-header col-start-1 col-span-3">Current Meal Plan</h2>
+        <div className="col-start-1 col-span-3">
           {mealPlansLoading ? (
             <div style={{ height: 250 }} className="pulse-loader" />
           ) : mealPlans?.length === 0 ? (
@@ -27,14 +27,13 @@ const Dashboard = (props: Props) => {
             </div>
           ) : null}
         </div>
-        <div className="col-span-1 border rounded py-2 px-4 flex flex-col">
+        <div className="col-start-4 col-span-1 border rounded py-2 px-4 flex flex-col">
           <Link className="btn bg-primary-500 hover:bg-primary-600 text-white text-center" to="/create">
             Create
           </Link>
         </div>
-        <div className="col-span-3">
-          <h2 className="text-lg font-header">History</h2>
-        </div>
+        <h2 className="col-start-1 col-span-3 text-lg font-header">History</h2>
+        <div className="col-start-1 col-span-3"></div>
       </div>
     </Layout>
   );

@@ -1,6 +1,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
+  purge: ['./src/**/*.html', './src/**/*.tsx'],
   theme: {
     extend: {
       colors: {
@@ -63,10 +64,38 @@ module.exports = {
       }
     },
     fontFamily: {
-      header: ['Lato', ...defaultTheme.fontFamily.sans],
-      body: defaultTheme.fontFamily.sans
-    }
+      header: ['Oswald', ...defaultTheme.fontFamily.sans],
+      body: ['Lato', ...defaultTheme.fontFamily.sans]
+    },
+    customForms: theme => ({
+      default: {
+        'input, select, textarea, multiselect': {
+          paddingTop: theme('spacing.1'),
+          paddingRight: theme('spacing.2'),
+          paddingBottom: theme('spacing.1'),
+          paddingLeft: theme('spacing.2'),
+          '&:disabled': {
+            backgroundColor: theme('colors.gray[100]')
+          },
+          '&[readonly]': {
+            backgroundColor: theme('colors.gray[100]')
+          }
+        },
+        'checkbox, radio': {
+          color: theme('colors.accent.400'),
+          '&:disabled': {
+            backgroundColor: theme('colors.gray[100]')
+          },
+          '&:disabled + *': {
+            color: theme('colors.gray[600]')
+          },
+          '&:disabled:checked': {
+            backgroundColor: theme('colors.gray[500]')
+          }
+        }
+      }
+    })
   },
   variants: {},
-  plugins: []
+  plugins: [require('@tailwindcss/custom-forms')]
 };

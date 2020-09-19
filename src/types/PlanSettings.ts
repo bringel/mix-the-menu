@@ -2,9 +2,16 @@ import { DayOfWeek } from './DayAndTime';
 
 export type PlanSettings = {
   startMealPlanOn: DayOfWeek;
-  includeBreakfast: boolean;
-  includeLunch: boolean;
-  includeDinner: boolean;
+  includeSlots: {
+    breakfast: boolean;
+    lunch: boolean;
+    dinner: boolean;
+  };
+  includeCategories: {
+    breakfast: boolean;
+    lunch: boolean;
+    dinner: boolean;
+  };
   leftoversCount: number;
   takeoutCount: number;
 };
