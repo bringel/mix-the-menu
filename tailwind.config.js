@@ -63,8 +63,8 @@ module.exports = {
       }
     },
     fontFamily: {
-      header: ['Lato', ...defaultTheme.fontFamily.sans],
-      body: defaultTheme.fontFamily.sans
+      header: ['Oswald', ...defaultTheme.fontFamily.sans],
+      body: ['Lato', ...defaultTheme.fontFamily.sans]
     },
     customForms: theme => ({
       default: {

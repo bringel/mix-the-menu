@@ -42,3 +42,7 @@
 .pulse-loader {
   animation: pulse 2s ease-in infinite;
 }
+
+body {
+  @apply font-body;
+}
