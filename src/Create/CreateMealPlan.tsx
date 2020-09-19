@@ -1,6 +1,7 @@
 import { addDays, getDay, startOfDay } from 'date-fns';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import Layout from '../components/Layout/Layout';
 import MealPlanSettingsForm, {
@@ -106,6 +107,7 @@ const schema = settingsSchema.concat(
 type Values = yup.InferType<typeof schema>;
 
 const CreateMealPlan = (props: Props) => {
+  const navigate = useNavigate();
   const { user } = useAuthContext();
   const { settings } = useUserSettingsContext();
 
@@ -164,9 +166,12 @@ const CreateMealPlan = (props: Props) => {
       const mealPlanData = createMealPlanData(formValues, user?.uid ?? '', settings?.categories ?? []);
       const firestore = firebase.firestore();
       const collection = firestore.collection(collections.mealPlans);
-      return collection.add(mealPlanData);
+      return collection.add(mealPlanData).then(doc => {
+        navigate('/');
+        return doc;
+      });
     },
-    [settings, user]
+    [navigate, settings, user]
   );
 
   return (
