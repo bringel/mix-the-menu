@@ -9,7 +9,7 @@ type Props = {
 const Layout = (props: Props) => {
   const { isSignedIn } = useAuthContext();
   return (
-    <div className="py-2 px-6 min-h-screen bg-gray-100">
+    <div className="py-2 px-8 min-h-screen bg-gray-200">
       <nav className="flex justify-between mb-2">
         <Link to="/">
           <h1 className="text-3xl font-header font-black">Mix the Menu</h1>
@@ -26,7 +26,7 @@ const Layout = (props: Props) => {
         )}
       </nav>
 
-      <div className="p-2">{props.children}</div>
+      <div className="container mx-auto">{props.children}</div>
     </div>
   );
 };

@@ -63,7 +63,7 @@ const CategorySettings = (props: Props) => {
             settings.categories.map(c => (
               <div key={c.id} className="border-t border-gray-600 flex flex-row justify-between content-center p-2">
                 <span>{c.displayName}</span>
-                <X className="hover:text-error-500 cursor-pointer" onClick={() => handleDeleteClicked(c.id)} />
+                <X className="hover:text-red-600 cursor-pointer" onClick={() => handleDeleteClicked(c.id)} />
               </div>
             ))
           ) : (

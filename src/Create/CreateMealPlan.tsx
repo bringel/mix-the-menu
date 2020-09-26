@@ -190,7 +190,7 @@ const CreateMealPlan = (props: Props) => {
                 </label>
               );
             })}
-            <ErrorMessage name="categories" component="div" className="text-error-500 text-sm mb-1" />
+            <ErrorMessage name="categories" component="div" className="text-red-600 text-sm mb-1" />
             <button
               className="btn bg-primary-500 hover:bg-primary-600 text-white mt-2"
               disabled={!formik.isValid || formik.isSubmitting}

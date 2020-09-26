@@ -96,10 +96,10 @@ const MealPlanSettingsForm = (props: Props) => {
       </div>
       <label htmlFor="leftovers">Leftovers meals</label>
       <Field type="number" className="form-input mb-1" name="leftovers" />
-      <ErrorMessage name="leftovers" component="div" className="text-error-500 text-sm" />
+      <ErrorMessage name="leftovers" component="div" className="text-red-600 text-sm" />
       <label htmlFor="takeout">Takeout meals</label>
       <Field type="number" className="form-input mb-1" name="takeout" />
-      <ErrorMessage name="takeout" component="div" className="text-error-500 text-sm mb-1" />
+      <ErrorMessage name="takeout" component="div" className="text-red-600 text-sm mb-1" />
     </>
   );
 };
