@@ -94,7 +94,7 @@ module.exports = {
       }
     },
     fontFamily: {
-      header: ['Oswald', ...defaultTheme.fontFamily.sans],
+      header: ['Roboto Slab', ...defaultTheme.fontFamily.sans],
       body: ['Lato', ...defaultTheme.fontFamily.sans]
     },
     customForms: theme => ({

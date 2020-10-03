@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Layout from '../components/Layout/Layout';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import useFirestoreComplexQuery from '../firebase/useFirestoreComplexQuery';
@@ -26,11 +25,6 @@ const Dashboard = (props: Props) => {
               No current meal plan
             </div>
           ) : null}
-        </div>
-        <div className="col-start-4 col-span-1 border rounded py-2 px-4 flex flex-col">
-          <Link className="btn bg-primary-500 hover:bg-primary-600 text-white text-center" to="/create">
-            Create
-          </Link>
         </div>
         <h2 className="col-start-1 col-span-3 text-lg font-header">History</h2>
         <div className="col-start-1 col-span-3"></div>

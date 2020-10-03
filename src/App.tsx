@@ -10,10 +10,10 @@ import Signup from './Signup/Signup';
 function AuthenticatedApp() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/user/settings/*" element={<Settings />} />
       <Route path="/create" element={<CreateMealPlan />} />
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>
   );
 }

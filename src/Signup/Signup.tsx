@@ -25,7 +25,7 @@ const Signup = (props: Props) => {
 
   useEffect(() => {
     if (authContext.isSignedIn) {
-      navigate('/');
+      navigate('/dashboard');
     }
   }, [authContext.isSignedIn, navigate]);
 
