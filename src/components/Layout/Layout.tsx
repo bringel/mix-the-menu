@@ -32,7 +32,9 @@ const Layout = (props: Props) => {
             <NavLink to="/user/settings" className="mr-2 py-1 px-3" activeClassName="bg-primary-600 rounded">
               Settings
             </NavLink>
-            <div className="">Logout</div>
+            <Link to="/logout" className="mr-2 py-1 px-3">
+              Logout
+            </Link>
           </div>
         )}
       </nav>
