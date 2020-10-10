@@ -1,7 +1,7 @@
 import { DayOfWeek } from './DayAndTime';
 
-export type PlanSettings = {
-  startMealPlanOn: DayOfWeek;
+export type MenuSettings = {
+  startMenuOn: DayOfWeek;
   includeSlots: {
     breakfast: boolean;
     lunch: boolean;

@@ -39,10 +39,10 @@ export const schema = yup
 export type Values = yup.InferType<typeof schema>;
 export type TimeOfDayOption = 'none' | 'slotOnly' | 'slotAndCategory';
 
-const MealPlanSettingsForm = (props: Props) => {
+const MenuSettingsForm = (props: Props) => {
   return (
     <>
-      <label htmlFor="startDay">Start meal plans on</label>
+      <label htmlFor="startDay">Start menus on</label>
       <Field as="select" name="startDay" className="form-select mb-2">
         <option value={DayOfWeek.Sunday}>Sunday</option>
         <option value={DayOfWeek.Monday}>Monday</option>
@@ -104,4 +104,4 @@ const MealPlanSettingsForm = (props: Props) => {
   );
 };
 
-export default MealPlanSettingsForm;
+export default MenuSettingsForm;

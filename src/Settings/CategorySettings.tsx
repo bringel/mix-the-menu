@@ -68,7 +68,7 @@ const CategorySettings = (props: Props) => {
             ))
           ) : (
             <div className="p-8 flex justify-center italic text-gray-600">
-              You have no saved meal categories. Add some categories so you can create your first randomized meal plan
+              You have no saved meal categories. Add some categories so you can create your first randomized menu
             </div>
           )}
         </div>

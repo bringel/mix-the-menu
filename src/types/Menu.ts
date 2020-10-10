@@ -1,21 +1,21 @@
 import { DayOfWeek, MealTime } from './DayAndTime';
-import { PlanSettings } from './PlanSettings';
+import { MenuSettings } from './MenuSettings';
 
-export type MealPlanSlot = {
+export type MenuSlot = {
   time: MealTime;
   categoryID: string | null;
   recipeName: string | null;
   recipeLink: string | null;
 };
 
-export type MealPlanDay = {
+export type MenuDay = {
   dayOfWeek: DayOfWeek;
-  slots: Array<MealPlanSlot>;
+  slots: Array<MenuSlot>;
 };
 
-export type MealPlan = {
+export type Menu = {
   userID: string;
   startDate: firebase.firestore.Timestamp;
-  settings: PlanSettings;
-  days: Array<MealPlanDay>;
+  settings: MenuSettings;
+  days: Array<MenuDay>;
 };

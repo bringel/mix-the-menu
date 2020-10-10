@@ -1,16 +1,12 @@
 import { Form, Formik } from 'formik';
 import React, { useCallback, useMemo } from 'react';
-import MealPlanSettingsForm, {
-  schema,
-  TimeOfDayOption,
-  Values
-} from '../components/MealPlanSettingsForm/MealPlanSettingsForm';
+import MenuSettingsForm, { schema, TimeOfDayOption, Values } from '../components/MenuSettingsForm/MenuSettingsForm';
 import { useUserSettingsContext } from '../contexts/UserSettingsContext';
 import { DayOfWeek } from '../types/DayAndTime';
 
 type Props = {};
 
-const MealPlanSettings = (props: Props) => {
+const MenuSettings = (props: Props) => {
   const { settings, updatePlanDefaultSettings } = useUserSettingsContext();
 
   const initialValues: Values = useMemo(() => {
@@ -42,7 +38,7 @@ const MealPlanSettings = (props: Props) => {
       }
 
       return {
-        startDay: settings.startMealPlanOn,
+        startDay: settings.startMenuOn,
         breakfastOptions: breakfastOptions,
         lunchOptions: lunchOptions,
         dinnerOptions: dinnerOptions,
@@ -65,7 +61,7 @@ const MealPlanSettings = (props: Props) => {
     (values: Values) => {
       if (values !== undefined && values !== null) {
         const settings = {
-          startMealPlanOn: values.startDay,
+          startMenuOn: values.startDay,
           includeSlots: {
             breakfast: values.breakfastOptions !== 'none',
             lunch: values.lunchOptions !== 'none',
@@ -87,15 +83,15 @@ const MealPlanSettings = (props: Props) => {
 
   return (
     <>
-      <h3 className="text-lg font-header">Meal Plan Settings</h3>
+      <h3 className="text-lg font-header">Menu Settings</h3>
       <p className="text-base italic my-2">
-        These settings will be used as defaults when creating a new meal plan. <br />
-        You can adjust them for a new meal plan when you create one.
+        These settings will be used as defaults when creating a new menu. <br />
+        You can adjust them for a new menu when you create one.
       </p>
       <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSave}>
         {formik => (
           <Form className="flex flex-col w-1/2">
-            <MealPlanSettingsForm />
+            <MenuSettingsForm />
             <button
               className="btn bg-primary-500 hover:bg-primary-600 text-white mt-2"
               disabled={!formik.isValid || formik.isSubmitting}
@@ -109,4 +105,4 @@ const MealPlanSettings = (props: Props) => {
   );
 };
 
-export default MealPlanSettings;
+export default MenuSettings;

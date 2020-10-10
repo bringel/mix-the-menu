@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import CreateMealPlan from './Create/CreateMealPlan';
+import CreateMenu from './Create/CreateMenu';
 import Dashboard from './Dashboard/Dashboard';
 import { useAuthContext } from './firebase/FirebaseAuthContext';
 import Login from './Login/Login';
@@ -13,7 +13,7 @@ function AuthenticatedApp() {
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/user/settings/*" element={<Settings />} />
-      <Route path="/create" element={<CreateMealPlan />} />
+      <Route path="/create" element={<CreateMenu />} />
       <Route path="/logout" element={<Logout />} />
       <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>

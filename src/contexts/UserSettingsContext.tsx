@@ -4,19 +4,19 @@ import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import useFirestoreDocument from '../firebase/useFirestoreDocument';
 import { collections } from '../firebaseCollections';
 import { DayOfWeek } from '../types/DayAndTime';
-import { PlanSettings } from '../types/PlanSettings';
+import { MenuSettings } from '../types/MenuSettings';
 import { UserSettings } from '../types/UserSettings';
 
 type UserSettingsContextValue = {
   settings: UserSettings | null | undefined;
   addCategory: (categoryName: string) => Promise<void>;
   removeCategory: (id: string) => Promise<void>;
-  updatePlanDefaultSettings: (settings: PlanSettings) => Promise<void>;
+  updatePlanDefaultSettings: (settings: MenuSettings) => Promise<void>;
 };
 
 const defaultSettings: UserSettings = {
   categories: [],
-  startMealPlanOn: DayOfWeek.Sunday,
+  startMenuOn: DayOfWeek.Sunday,
   includeSlots: {
     breakfast: true,
     lunch: true,
@@ -93,11 +93,11 @@ export const UserSettingsContextProvider = (props: Props) => {
       }
     };
 
-    const updatePlanDefaultSettings = (planSettings: PlanSettings) => {
+    const updatePlanDefaultSettings = (menuSettings: MenuSettings) => {
       if (settingsDocRef && settings) {
         const updatedSettings = {
           ...settings,
-          ...planSettings
+          ...menuSettings
         };
         return settingsDocRef.set(updatedSettings);
       } else {

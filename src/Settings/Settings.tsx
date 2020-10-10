@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  Navigate,
-  NavLink,
-  Route,
-  Routes
-  } from 'react-router-dom';
+import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import Layout from '../components/Layout/Layout';
 import CategorySettings from './CategorySettings';
-import MealPlanSettings from './MealPlanSettings';
+import MenuSettings from './MenuSettings';
 
 type Props = {};
 
@@ -33,7 +28,7 @@ const Settings = (props: Props) => {
                   to="meal-plan"
                   className="px-3 py-1 font-header"
                   activeClassName="border-b-2 border-primary-500">
-                  Meal Plan
+                  Menu
                 </NavLink>
               </li>
             </ul>
@@ -42,7 +37,7 @@ const Settings = (props: Props) => {
         <div className="col-span-6">
           <Routes>
             <Route path="categories" element={<CategorySettings />} />
-            <Route path="meal-plan" element={<MealPlanSettings />} />
+            <Route path="meal-plan" element={<MenuSettings />} />
             <Route path="*" element={<Navigate to="categories" />} />
           </Routes>
         </div>

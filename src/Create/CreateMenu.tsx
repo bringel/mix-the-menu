@@ -4,22 +4,22 @@ import React, { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import Layout from '../components/Layout/Layout';
-import MealPlanSettingsForm, {
+import MenuSettingsForm, {
   schema as settingsSchema,
   TimeOfDayOption
-} from '../components/MealPlanSettingsForm/MealPlanSettingsForm';
+} from '../components/MenuSettingsForm/MenuSettingsForm';
 import { useUserSettingsContext } from '../contexts/UserSettingsContext';
 import firebase from '../firebase';
 import { useAuthContext } from '../firebase/FirebaseAuthContext';
 import { collections } from '../firebaseCollections';
 import { DayOfWeek, MealTime } from '../types/DayAndTime';
-import { MealPlan, MealPlanDay, MealPlanSlot } from '../types/MealPlan';
+import { Menu, MenuDay, MenuSlot } from '../types/Menu';
 import { MealCategory } from '../types/UserSettings';
 
-function createMealPlanData(formValues: Values, userID: string, userCategories: Array<MealCategory>): MealPlan {
+function createMenuData(formValues: Values, userID: string, userCategories: Array<MealCategory>): Menu {
   const enabledCategories = userCategories.filter(c => formValues.categories.includes(c.id));
-  const planSettings = {
-    startMealPlanOn: formValues.startDay,
+  const menuSettings = {
+    startMenuOn: formValues.startDay,
     includeSlots: {
       breakfast: formValues.breakfastOptions !== 'none',
       lunch: formValues.lunchOptions !== 'none',
@@ -41,10 +41,10 @@ function createMealPlanData(formValues: Values, userID: string, userCategories: 
     foundDay = getDay(startDate) === formValues.startDay;
   }
 
-  const days: Array<MealPlanDay> = [];
+  const days: Array<MenuDay> = [];
   for (let i = 0; i < 7; i++) {
-    const slots: Array<MealPlanSlot> = [];
-    if (planSettings.includeSlots.breakfast) {
+    const slots: Array<MenuSlot> = [];
+    if (menuSettings.includeSlots.breakfast) {
       slots.push({
         time: MealTime.Breakfast,
         categoryID: null,
@@ -52,7 +52,7 @@ function createMealPlanData(formValues: Values, userID: string, userCategories: 
         recipeLink: null
       });
     }
-    if (planSettings.includeSlots.lunch) {
+    if (menuSettings.includeSlots.lunch) {
       slots.push({
         time: MealTime.Lunch,
         categoryID: null,
@@ -60,7 +60,7 @@ function createMealPlanData(formValues: Values, userID: string, userCategories: 
         recipeLink: null
       });
     }
-    if (planSettings.includeSlots.dinner) {
+    if (menuSettings.includeSlots.dinner) {
       slots.push({
         time: MealTime.Dinner,
         categoryID: null,
@@ -75,9 +75,9 @@ function createMealPlanData(formValues: Values, userID: string, userCategories: 
   for (let day of days) {
     for (let slot of day.slots) {
       if (
-        (slot.time === MealTime.Breakfast && planSettings.includeCategories.breakfast) ||
-        (slot.time === MealTime.Lunch && planSettings.includeCategories.lunch) ||
-        (slot.time === MealTime.Dinner && planSettings.includeCategories.dinner)
+        (slot.time === MealTime.Breakfast && menuSettings.includeCategories.breakfast) ||
+        (slot.time === MealTime.Lunch && menuSettings.includeCategories.lunch) ||
+        (slot.time === MealTime.Dinner && menuSettings.includeCategories.dinner)
       ) {
         const categoryIndex = Math.floor(Math.random() * enabledCategories.length);
         slot.categoryID = enabledCategories[categoryIndex].id;
@@ -88,7 +88,7 @@ function createMealPlanData(formValues: Values, userID: string, userCategories: 
   return {
     userID: userID,
     startDate: firebase.firestore.Timestamp.fromDate(startDate),
-    settings: planSettings,
+    settings: menuSettings,
     days: days
   };
 }
@@ -106,7 +106,7 @@ const schema = settingsSchema.concat(
 
 type Values = yup.InferType<typeof schema>;
 
-const CreateMealPlan = (props: Props) => {
+const CreateMenu = (props: Props) => {
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const { settings } = useUserSettingsContext();
@@ -140,7 +140,7 @@ const CreateMealPlan = (props: Props) => {
       }
 
       return {
-        startDay: settings.startMealPlanOn,
+        startDay: settings.startMenuOn,
         breakfastOptions: breakfastOptions,
         lunchOptions: lunchOptions,
         dinnerOptions: dinnerOptions,
@@ -163,10 +163,10 @@ const CreateMealPlan = (props: Props) => {
 
   const handleSubmit = useCallback(
     formValues => {
-      const mealPlanData = createMealPlanData(formValues, user?.uid ?? '', settings?.categories ?? []);
+      const menuData = createMenuData(formValues, user?.uid ?? '', settings?.categories ?? []);
       const firestore = firebase.firestore();
-      const collection = firestore.collection(collections.mealPlans);
-      return collection.add(mealPlanData).then(doc => {
+      const collection = firestore.collection(collections.menus);
+      return collection.add(menuData).then(doc => {
         navigate('/');
         return doc;
       });
@@ -176,11 +176,11 @@ const CreateMealPlan = (props: Props) => {
 
   return (
     <Layout>
-      <h2 className="text-xl font-header mb-4">Create a Meal Plan</h2>
+      <h2 className="text-xl font-header mb-4">Create a Menu</h2>
       <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
         {formik => (
           <Form className="flex flex-col w-1/3">
-            <MealPlanSettingsForm />
+            <MenuSettingsForm />
             <div className="text-lg mt-2">Enabled Categories</div>
             {settings?.categories.map(c => {
               return (
@@ -204,4 +204,4 @@ const CreateMealPlan = (props: Props) => {
   );
 };
 
-export default CreateMealPlan;
+export default CreateMenu;
