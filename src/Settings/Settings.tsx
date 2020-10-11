@@ -9,25 +9,22 @@ type Props = {};
 const Settings = (props: Props) => {
   return (
     <Layout>
-      <h2 className="text-xl mb-2 font-header">User Settings</h2>
+      <h2 className="text-xl mb-4 font-header">User Settings</h2>
 
       <div className="grid grid-cols-12">
-        <div className="col-start-2">
+        <div className="col-span-2">
           <nav>
             <ul>
               <li className="mb-2">
                 <NavLink
                   to="categories"
-                  className="px-3 py-1 font-header w-full"
+                  className="pr-1 py-1 font-header"
                   activeClassName="border-b-2 border-primary-500">
                   Categories
                 </NavLink>
               </li>
               <li className="mb-2">
-                <NavLink
-                  to="meal-plan"
-                  className="px-3 py-1 font-header"
-                  activeClassName="border-b-2 border-primary-500">
+                <NavLink to="menu" className="pr-1 py-1 font-header" activeClassName="border-b-2 border-primary-500">
                   Menu
                 </NavLink>
               </li>
@@ -37,7 +34,7 @@ const Settings = (props: Props) => {
         <div className="col-span-6">
           <Routes>
             <Route path="categories" element={<CategorySettings />} />
-            <Route path="meal-plan" element={<MenuSettings />} />
+            <Route path="menu" element={<MenuSettings />} />
             <Route path="*" element={<Navigate to="categories" />} />
           </Routes>
         </div>

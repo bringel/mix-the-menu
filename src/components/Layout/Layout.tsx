@@ -21,14 +21,14 @@ const Layout = (props: Props) => {
               <NavLink to="/history" className="mr-2 py-1 px-3" activeClassName="bg-primary-600 rounded">
                 History
               </NavLink>
+              <Link to="/create" className="bg-gray-800 text-white font-semibold rounded mr-2 py-2 px-4">
+                Create Menu
+              </Link>
             </div>
           )}
         </div>
         {isSignedIn && (
           <div className="flex items-center mt-2">
-            <Link to="/create" className="bg-gray-800 text-white font-semibold rounded mr-2 py-2 px-4">
-              Create Menu
-            </Link>
             <NavLink to="/user/settings" className="mr-2 py-1 px-3" activeClassName="bg-primary-600 rounded">
               Settings
             </NavLink>
