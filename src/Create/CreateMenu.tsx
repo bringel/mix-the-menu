@@ -191,10 +191,7 @@ const CreateMenu = (props: Props) => {
               );
             })}
             <ErrorMessage name="categories" component="div" className="text-red-600 text-sm mb-1" />
-            <button
-              className="btn bg-primary-500 hover:bg-primary-600 text-white mt-2"
-              disabled={!formik.isValid || formik.isSubmitting}
-              type="submit">
+            <button className="btn btn-primary mt-2" disabled={!formik.isValid || formik.isSubmitting} type="submit">
               Save
             </button>
           </Form>

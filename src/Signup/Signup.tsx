@@ -64,11 +64,11 @@ const Signup = (props: Props) => {
                 <label htmlFor="password">Password</label>
                 <Field name="password" type="password" className="form-input w-full mb-1" />
                 <label htmlFor="password">Verify Password</label>
-                <Field name="passwordVerify" type="password" className="form-input w-full mb-1" />
+                <Field name="passwordVerify" type="password" className="form-input w-full mb-3" />
 
                 <button
                   type="submit"
-                  className="btn bg-primary-500 hover:bg-primary-600 text-white w-full my-2"
+                  className="btn btn-primary w-full"
                   disabled={!formik.isValid || formik.isSubmitting}>
                   Sign Up
                 </button>

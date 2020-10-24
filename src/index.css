@@ -10,7 +10,11 @@
 
 @layer components {
   .btn {
-    @apply py-2 px-4 rounded-md;
+    @apply py-2 px-4 rounded-md border-b-4 border-black border-opacity-25;
+  }
+
+  .btn:active {
+    @apply border-b-0 mt-1;
   }
 
   .btn:disabled {
@@ -19,6 +23,22 @@
 
   .btn:disabled:hover {
     @apply bg-gray-500;
+  }
+
+  .btn-primary {
+    @apply bg-primary-500 text-white;
+  }
+
+  .btn-primary:hover {
+    @apply bg-primary-600;
+  }
+
+  .btn-gray {
+    @apply bg-gray-800 text-white;
+  }
+
+  .btn-gray:hover {
+    @apply bg-gray-900;
   }
 
   .input {

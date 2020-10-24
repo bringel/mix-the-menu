@@ -92,12 +92,11 @@ const MenuSettings = (props: Props) => {
         {formik => (
           <Form className="flex flex-col w-1/2">
             <MenuSettingsForm />
-            <button
-              className="btn bg-primary-500 hover:bg-primary-600 text-white mt-2"
-              disabled={!formik.isValid || formik.isSubmitting}
-              type="submit">
-              Save
-            </button>
+            <div className="mt-2">
+              <button className="btn btn-primary" disabled={!formik.isValid || formik.isSubmitting} type="submit">
+                Save
+              </button>
+            </div>
           </Form>
         )}
       </Formik>

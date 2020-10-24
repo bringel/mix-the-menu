@@ -34,17 +34,17 @@ const Login = (props: Props) => {
                 <label htmlFor="email">Email</label>
                 <Field name="email" className="form-input w-full mb-1" />
                 <label htmlFor="password">Password</label>
-                <Field name="password" type="password" className="form-input w-full mb-1" />
+                <Field name="password" type="password" className="form-input w-full mb-3" />
                 <button
                   type="submit"
-                  className="btn bg-primary-500 text-white text-lg w-full hover:bg-green-700 my-2"
+                  className="btn btn-primary text-lg w-full"
                   disabled={!formikProps.isValid || formikProps.isSubmitting}>
                   Log In
                 </button>
               </Form>
             )}
           </Formik>
-          <div>
+          <div mt-2>
             Don't have an account?&nbsp;
             <Link to="/signup" className="text-primary-500 underline">
               Sign Up

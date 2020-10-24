@@ -21,7 +21,7 @@ const Layout = (props: Props) => {
               <NavLink to="/history" className="mr-2 py-1 px-3" activeClassName="bg-primary-600 rounded">
                 History
               </NavLink>
-              <Link to="/create" className="bg-gray-800 text-white font-semibold rounded mr-2 py-2 px-4">
+              <Link to="/create" className="btn btn-gray font-semibold mr-2 ">
                 Create Menu
               </Link>
             </div>
